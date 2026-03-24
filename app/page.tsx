@@ -17,17 +17,17 @@ export default function Home() {
     <>
       <SiteHeader />
       <main className="flex-1">
-        <section className="border-b border-[color:var(--line)] px-6 pb-18 pt-10 md:px-10 md:pb-24 md:pt-16">
-          <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-            <div className="space-y-8">
-              <span className="inline-flex rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[color:var(--soft-gold)]">
+        <section className="border-b border-[color:var(--line)] px-4 pb-14 pt-8 md:px-10 md:pb-24 md:pt-16">
+          <div className="mx-auto grid max-w-7xl gap-8 md:gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+            <div className="space-y-6 md:space-y-8">
+              <span className="inline-flex max-w-full rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--soft-gold)] md:text-[0.7rem] md:tracking-[0.32em]">
                 Cakish · Quietly Luxurious Celebrations
               </span>
-              <div className="space-y-6">
-                <h1 className="max-w-4xl font-serif text-5xl leading-[0.92] tracking-[-0.03em] text-[color:var(--deep-charcoal)] md:text-7xl">
+              <div className="space-y-4 md:space-y-6">
+                <h1 className="max-w-4xl font-serif text-4xl leading-[0.95] tracking-[-0.03em] text-[color:var(--deep-charcoal)] sm:text-5xl md:text-7xl">
                   The Cakish Modern Pavlova
                 </h1>
-                <p className="max-w-2xl text-lg leading-8 text-[color:var(--body-copy)] md:text-xl">
+                <p className="max-w-2xl text-base leading-7 text-[color:var(--body-copy)] md:text-xl md:leading-8">
                   A refined modern take on pavlova, created for meaningful
                   celebrations. Light, sculptural, and designed to arrive at the
                   table like the centrepiece it is.
@@ -53,7 +53,7 @@ export default function Home() {
                 ))}
               </div>
 
-              <div className="flex flex-col gap-4 sm:flex-row">
+              <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                 <Link href="/order" className="cakish-button">
                   Reserve Your Order
                 </Link>
@@ -65,7 +65,7 @@ export default function Home() {
 
             <div className="relative">
               <div className="absolute inset-x-[12%] -top-5 h-20 rounded-full bg-[radial-gradient(circle,_rgba(216,167,167,0.24),_transparent_70%)] blur-2xl" />
-              <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/70 p-4 shadow-[0_30px_80px_rgba(53,45,34,0.12)]">
+              <div className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_30px_80px_rgba(53,45,34,0.12)] md:rounded-[2.5rem] md:p-4">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
                   <Image
                     src={assetPath("/images/hero-pavlova.jpeg")}
@@ -75,11 +75,11 @@ export default function Home() {
                     priority
                   />
                 </div>
-                <div className="pointer-events-none absolute bottom-10 left-8 rounded-full border border-white/50 bg-[rgba(248,246,242,0.86)] px-5 py-3 shadow-[0_16px_30px_rgba(53,45,34,0.08)] backdrop-blur">
-                  <p className="font-serif text-2xl text-[color:var(--deep-charcoal)]">
+                <div className="relative mt-4 rounded-[1.6rem] border border-white/50 bg-[rgba(248,246,242,0.9)] px-4 py-3 shadow-[0_16px_30px_rgba(53,45,34,0.08)] backdrop-blur md:pointer-events-none md:absolute md:bottom-10 md:left-8 md:mt-0 md:rounded-full md:px-5">
+                  <p className="font-serif text-xl text-[color:var(--deep-charcoal)] md:text-2xl">
                     Signature Floral Finish
                   </p>
-                  <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                  <p className="text-[0.72rem] uppercase tracking-[0.14em] text-[color:var(--soft-gold)] md:text-sm md:tracking-[0.2em]">
                     Premium presentation +EUR {productConfig.finishes["strawberry-floral-finish"].surcharge}
                   </p>
                 </div>
@@ -88,14 +88,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-b border-[color:var(--line)] px-6 py-16 md:px-10 md:py-22">
+        <section className="border-b border-[color:var(--line)] px-4 py-14 md:px-10 md:py-22">
           <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="space-y-4">
               <span className="section-label">Made For</span>
-              <h2 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+              <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
                 Celebrations with a little more presence.
               </h2>
-              <p className="max-w-xl text-lg leading-8 text-[color:var(--body-copy)]">
+              <p className="max-w-xl text-base leading-7 text-[color:var(--body-copy)] md:text-lg md:leading-8">
                 Cakish is designed for the kind of occasions people remember in
                 detail: the table, the flowers, the room, the way dessert made
                 everyone pause for a moment.
@@ -105,12 +105,12 @@ export default function Home() {
               {madeForMoments.map((moment) => (
                 <article
                   key={moment}
-                  className="rounded-[2rem] border border-[color:var(--line)] bg-white/75 p-6 shadow-[0_18px_45px_rgba(53,45,34,0.05)]"
+                  className="rounded-[1.7rem] border border-[color:var(--line)] bg-white/75 p-5 shadow-[0_18px_45px_rgba(53,45,34,0.05)] md:rounded-[2rem] md:p-6"
                 >
-                  <p className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)]">
+                  <p className="font-serif text-2xl leading-tight text-[color:var(--deep-charcoal)] md:text-3xl">
                     {moment.split(" ")[0]}
                   </p>
-                  <p className="mt-3 text-base leading-7 text-[color:var(--muted-copy)]">
+                  <p className="mt-3 text-sm leading-6 text-[color:var(--muted-copy)] md:text-base md:leading-7">
                     {moment}
                   </p>
                 </article>
@@ -119,12 +119,12 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-b border-[color:var(--line)] px-6 py-16 md:px-10 md:py-22">
+        <section className="border-b border-[color:var(--line)] px-4 py-14 md:px-10 md:py-22">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <span className="section-label">Gallery</span>
-                <h2 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+                <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
                   An editorial look at the collection.
                 </h2>
               </div>
@@ -134,9 +134,9 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 md:grid-cols-[1.1fr_0.9fr]">
-              <div className="relative min-h-[34rem] overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/70 p-4 shadow-[0_24px_60px_rgba(53,45,34,0.08)]">
-                <div className="relative h-full min-h-[30rem] overflow-hidden rounded-[2rem]">
+            <div className="mt-8 grid gap-4 md:mt-10 md:gap-5 md:grid-cols-[1.1fr_0.9fr]">
+              <div className="relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_24px_60px_rgba(53,45,34,0.08)] md:min-h-[34rem] md:rounded-[2.5rem] md:p-4">
+                <div className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.6rem] md:min-h-[30rem] md:rounded-[2rem]">
                   <Image
                     src={assetPath("/images/gallery-one.jpeg")}
                     alt="Close-up of a decorated modern pavlova."
@@ -162,9 +162,9 @@ export default function Home() {
                 ].map((image) => (
                   <div
                     key={image.src}
-                    className="relative min-h-[14rem] overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_18px_45px_rgba(53,45,34,0.06)]"
+                    className="relative min-h-[12rem] overflow-hidden rounded-[1.6rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_18px_45px_rgba(53,45,34,0.06)] md:min-h-[14rem] md:rounded-[2rem]"
                   >
-                    <div className="relative h-full min-h-[12rem] overflow-hidden rounded-[1.5rem]">
+                    <div className="relative h-full min-h-[10rem] overflow-hidden rounded-[1.2rem] md:min-h-[12rem] md:rounded-[1.5rem]">
                       <Image
                         src={assetPath(image.src)}
                         alt={image.alt}
@@ -179,14 +179,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="px-6 py-16 md:px-10 md:py-22">
-          <div className="mx-auto grid max-w-7xl gap-8 rounded-[2.75rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.86),rgba(243,239,233,0.92))] p-8 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:grid-cols-[1fr_0.9fr] md:p-12">
+        <section className="px-4 py-14 md:px-10 md:py-22">
+          <div className="mx-auto grid max-w-7xl gap-8 rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.86),rgba(243,239,233,0.92))] p-6 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:grid-cols-[1fr_0.9fr] md:rounded-[2.75rem] md:p-12">
             <div className="space-y-5">
               <span className="section-label">Collection</span>
-              <h2 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+              <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
                 A beautifully simple ordering rhythm.
               </h2>
-              <p className="max-w-xl text-lg leading-8 text-[color:var(--body-copy)]">
+              <p className="max-w-xl text-base leading-7 text-[color:var(--body-copy)] md:text-lg md:leading-8">
                 Select your size, choose your finish, and reserve your date.
                 Payments will be connected directly in a future release, but the
                 full path is already designed into the experience.
@@ -205,12 +205,12 @@ export default function Home() {
               {siteContent.collectionHighlights.map((item) => (
                 <article
                   key={item.title}
-                  className="rounded-[1.75rem] border border-[color:var(--line)] bg-white/80 p-5"
+                  className="rounded-[1.5rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[1.75rem] md:p-5"
                 >
                   <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
                     {item.title}
                   </p>
-                  <p className="mt-2 text-base leading-7 text-[color:var(--body-copy)]">
+                  <p className="mt-2 text-sm leading-6 text-[color:var(--body-copy)] md:text-base md:leading-7">
                     {item.copy}
                   </p>
                 </article>

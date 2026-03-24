@@ -35,6 +35,7 @@ body {
     linear-gradient(180deg, #fbfaf8 0%, #f6f1ea 100%);
   color: var(--deep-charcoal);
   font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
 a {
@@ -99,4 +100,21 @@ a {
 .cakish-button-secondary:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.95);
+}
+
+@media (max-width: 767px) {
+  .section-label {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+  }
+
+  .cakish-button,
+  .cakish-button-secondary {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.85rem 1.2rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+  }
 }

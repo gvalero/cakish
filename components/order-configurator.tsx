@@ -52,10 +52,10 @@ export function OrderConfigurator() {
   return (
     <>
       <section className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="space-y-6 rounded-[2.6rem] border border-[color:var(--line)] bg-white/75 p-6 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:p-8">
+        <div className="space-y-6 rounded-[2rem] border border-[color:var(--line)] bg-white/75 p-5 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:rounded-[2.6rem] md:p-8">
           <div className="space-y-3">
             <span className="section-label">Configurator</span>
-            <h2 className="font-serif text-4xl text-[color:var(--deep-charcoal)] md:text-5xl">
+            <h2 className="font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-5xl">
               Design your order.
             </h2>
             <p className="max-w-2xl text-base leading-7 text-[color:var(--body-copy)]">
@@ -65,8 +65,8 @@ export function OrderConfigurator() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-baseline justify-between">
-              <h3 className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+            <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+              <h3 className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                 Select your size
               </h3>
               <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-copy)]">
@@ -93,7 +93,7 @@ export function OrderConfigurator() {
                         : "border-[color:var(--line)] bg-[rgba(255,255,255,0.72)] hover:border-[color:var(--soft-gold)]/50"
                     }`}
                   >
-                    <p className="font-serif text-4xl text-[color:var(--deep-charcoal)]">
+                    <p className="font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
                       {key}
                     </p>
                     <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
@@ -109,8 +109,8 @@ export function OrderConfigurator() {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-baseline justify-between">
-              <h3 className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+            <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+              <h3 className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                 Choose your finish
               </h3>
               <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--muted-copy)]">
@@ -137,7 +137,7 @@ export function OrderConfigurator() {
                         : "border-[color:var(--line)] bg-[rgba(255,255,255,0.72)] hover:border-[color:var(--muted-rose)]/60"
                     }`}
                   >
-                    <p className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)]">
+                    <p className="font-serif text-2xl leading-tight text-[color:var(--deep-charcoal)] md:text-3xl">
                       {option.label}
                     </p>
                     <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
@@ -152,19 +152,19 @@ export function OrderConfigurator() {
             </div>
           </div>
 
-          <div className="grid gap-4 rounded-[2rem] border border-[color:var(--line)] bg-[rgba(255,255,255,0.75)] p-5 md:grid-cols-[auto_1fr] md:items-center">
+          <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-[rgba(255,255,255,0.75)] p-4 md:grid-cols-[auto_1fr] md:items-center md:rounded-[2rem] md:p-5">
             <div>
               <p className="text-sm uppercase tracking-[0.22em] text-[color:var(--soft-gold)]">
                 Quantity
               </p>
-              <p className="mt-2 font-serif text-3xl text-[color:var(--deep-charcoal)]">
+              <p className="mt-2 font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                 {quantity}
               </p>
             </div>
             <div className="flex items-center gap-3 justify-self-start md:justify-self-end">
               <button
                 type="button"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl md:h-12 md:w-12"
                 onClick={() => setQuantity((value) => Math.max(1, value - 1))}
                 aria-label="Decrease quantity"
               >
@@ -172,7 +172,7 @@ export function OrderConfigurator() {
               </button>
               <button
                 type="button"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl md:h-12 md:w-12"
                 onClick={() => setQuantity((value) => value + 1)}
                 aria-label="Increase quantity"
               >
@@ -182,25 +182,25 @@ export function OrderConfigurator() {
           </div>
         </div>
 
-        <aside className="space-y-5 rounded-[2.6rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.86),rgba(243,239,233,0.94))] p-6 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:p-8">
+        <aside className="space-y-5 rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.86),rgba(243,239,233,0.94))] p-5 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:rounded-[2.6rem] md:p-8">
           <div className="space-y-3">
             <span className="section-label">Order Summary</span>
-            <h2 className="font-serif text-4xl text-[color:var(--deep-charcoal)]">
+            <h2 className="font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
               A polished preview of your order.
             </h2>
           </div>
 
-          <div className="space-y-4 rounded-[2rem] border border-[color:var(--line)] bg-white/80 p-5">
-            <div className="flex items-start justify-between gap-4">
+          <div className="space-y-4 rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+                <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                   {siteContent.productName}
                 </p>
                 <p className="mt-1 text-sm uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
                   {selectedSize} · {finish.label}
                 </p>
               </div>
-              <p className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+              <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                 EUR {pricing.unitPrice}
               </p>
             </div>
@@ -229,7 +229,7 @@ export function OrderConfigurator() {
             </div>
           </div>
 
-          <div className="grid gap-4 rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-5">
+          <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-white/70 p-4 md:rounded-[2rem] md:p-5">
             {siteContent.collectionHighlights.map((item) => (
               <div key={item.title}>
                 <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
@@ -279,14 +279,14 @@ export function OrderConfigurator() {
 
       <aside
         aria-hidden={!drawerOpen}
-        className={`fixed inset-y-0 right-0 z-[60] flex w-full max-w-xl flex-col border-l border-[color:var(--line)] bg-[linear-gradient(180deg,#fbfaf8_0%,#f4ede4_100%)] p-6 shadow-[-24px_0_60px_rgba(53,45,34,0.18)] transition-transform duration-300 md:p-8 ${
+        className={`fixed inset-y-0 right-0 z-[60] flex w-full max-w-xl flex-col overflow-y-auto border-l border-[color:var(--line)] bg-[linear-gradient(180deg,#fbfaf8_0%,#f4ede4_100%)] p-4 shadow-[-24px_0_60px_rgba(53,45,34,0.18)] transition-transform duration-300 md:p-8 ${
           drawerOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="section-label">Checkout Preview</p>
-            <h2 className="mt-4 font-serif text-4xl text-[color:var(--deep-charcoal)]">
+            <h2 className="mt-4 font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
               Secure checkout, styled for what comes next.
             </h2>
           </div>
@@ -303,24 +303,24 @@ export function OrderConfigurator() {
           </button>
         </div>
 
-        <div className="mt-8 space-y-5">
-          <div className="rounded-[2rem] border border-[color:var(--line)] bg-white/80 p-5">
-            <div className="flex justify-between gap-4">
+        <div className="mt-6 space-y-4 md:mt-8 md:space-y-5">
+          <div className="rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+                <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                   {selectedSize}
                 </p>
                 <p className="mt-1 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
                   {finish.label}
                 </p>
               </div>
-              <p className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+              <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                 EUR {pricing.total}
               </p>
             </div>
           </div>
 
-          <div className="grid gap-4 rounded-[2rem] border border-[color:var(--line)] bg-white/80 p-5">
+          <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
             {["Full name", "Email address", "Preferred collection date"].map(
               (field) => (
                 <label key={field} className="space-y-2 text-sm font-medium">
@@ -338,7 +338,7 @@ export function OrderConfigurator() {
             )}
           </div>
 
-          <div className="rounded-[2rem] border border-[color:var(--line)] bg-white/80 p-5 text-sm leading-6 text-[color:var(--body-copy)]">
+          <div className="rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 text-sm leading-6 text-[color:var(--body-copy)] md:rounded-[2rem] md:p-5">
             <p className="font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
               Fulfilment
             </p>
@@ -346,7 +346,7 @@ export function OrderConfigurator() {
           </div>
         </div>
 
-        <div className="mt-auto space-y-4 pt-8">
+        <div className="mt-8 space-y-4 pb-4 md:mt-auto md:pt-8">
           <button
             type="button"
             className="cakish-button w-full"
@@ -365,13 +365,13 @@ export function OrderConfigurator() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="payments-soon-title"
-            className="absolute inset-6 grid place-items-center rounded-[2.4rem] border border-white/40 bg-[rgba(248,246,242,0.9)] p-8 text-center shadow-[0_18px_50px_rgba(53,45,34,0.14)] backdrop-blur-md"
+            className="absolute inset-3 grid place-items-center rounded-[2rem] border border-white/40 bg-[rgba(248,246,242,0.9)] p-5 text-center shadow-[0_18px_50px_rgba(53,45,34,0.14)] backdrop-blur-md md:inset-6 md:rounded-[2.4rem] md:p-8"
           >
             <div className="max-w-sm space-y-4">
               <p className="section-label">Soon</p>
               <h3
                 id="payments-soon-title"
-                className="font-serif text-5xl text-[color:var(--deep-charcoal)]"
+                className="font-serif text-4xl text-[color:var(--deep-charcoal)] md:text-5xl"
               >
                 Payments are coming soon.
               </h3>
