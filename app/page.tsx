@@ -8,19 +8,19 @@ import { productConfig, siteContent } from "@/lib/site-data";
 const madeForMoments = [
   {
     heading: "Birthday",
-    copy: "Birthday tables that deserve something unforgettable.",
+    copy: "A centrepiece that feels as considered as the celebration itself.",
     image: "/images/occasion-birthday.jpeg",
     alt: "Cakish pavlova styled as a birthday centrepiece with candles and rose petals.",
   },
   {
     heading: "Communion",
-    copy: "First communions and intimate family celebrations.",
+    copy: "Quietly elegant. Perfectly scaled for the occasion.",
     image: "/images/occasion-communion.jpeg",
     alt: "Cakish pavlova styled for a First Communion with white roses and a cross.",
   },
   {
     heading: "Hosting",
-    copy: "Elegant hosting, garden lunches, and meaningful gatherings.",
+    copy: "For the kind of evening where every detail matters.",
     image: "/images/occasion-hosting.jpeg",
     alt: "Cakish pavlova as a dinner party centrepiece on a beautifully set table.",
   },
@@ -29,6 +29,12 @@ const madeForMoments = [
     copy: "Thoughtful gifting when flowers alone are not enough.",
     image: "/images/occasion-birthday.jpeg",
     alt: "Cakish pavlova presented as a premium gift.",
+  },
+  {
+    heading: "Meaningful Celebrations",
+    copy: "Milestones deserve something made, not bought.",
+    image: "/images/occasion-hosting.jpeg",
+    alt: "Cakish pavlova for a meaningful milestone celebration.",
   },
 ];
 
@@ -49,6 +55,9 @@ export default function Home() {
                 <h1 className="max-w-4xl font-serif text-4xl leading-[0.95] tracking-[-0.03em] text-[color:var(--deep-charcoal)] sm:text-5xl md:text-7xl">
                   The Cakish Modern Pavlova
                 </h1>
+                <p className="max-w-xl font-serif text-xl italic leading-8 text-[color:var(--soft-gold)] md:text-2xl">
+                  A contemporary centrepiece — sculptural, seasonal, designed to be remembered.
+                </p>
                 <p className="max-w-2xl text-base leading-7 text-[color:var(--body-copy)] md:text-xl md:leading-8">
                   Not a traditional pavlova. A contemporary reinterpretation — built on a crisp meringue base, finished with hand-piped cream and seasonal fruit arranged with editorial precision. Every pavlova is made fresh to order, designed to hold the table.
                 </p>
@@ -139,7 +148,7 @@ export default function Home() {
                     +EUR {productConfig.finishes["strawberry-floral-finish"].surcharge}
                   </p>
                   <p className="mt-3 text-sm leading-6 text-[color:var(--muted-copy)] md:text-base md:leading-7">
-                    Whole strawberries thinly sliced and arranged in a sculpted floral pattern — a signature presentation that turns the pavlova into a centrepiece.
+                    Whole strawberries thinly sliced and arranged in a sculpted floral pattern, finished with micro-herbs and edible petals — a signature presentation that turns the pavlova into a centrepiece.
                   </p>
                 </div>
               </div>
@@ -161,7 +170,7 @@ export default function Home() {
                     Included
                   </p>
                   <p className="mt-3 text-sm leading-6 text-[color:var(--muted-copy)] md:text-base md:leading-7">
-                    Precisely chopped seasonal strawberries layered generously — a polished, contemporary presentation that is effortless to serve.
+                    Precisely sliced seasonal fruit layered in clean geometric lines — a polished, contemporary presentation that is effortless to serve.
                   </p>
                 </div>
               </div>
@@ -185,7 +194,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
               {madeForMoments.map((moment) => (
                 <article
                   key={moment.heading}
@@ -269,6 +278,50 @@ export default function Home() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Availability Section */}
+        <section className="border-b border-[color:var(--line)] px-4 py-16 md:px-10 md:py-24">
+          <div className="mx-auto max-w-3xl text-center space-y-6">
+            <div className="mx-auto h-px w-16 bg-[color:var(--soft-gold)]" />
+            <h2 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-6xl">
+              Availability
+            </h2>
+            <p className="text-base leading-7 text-[color:var(--body-copy)] md:text-xl md:leading-9">
+              Each pavlova is made fresh to order. We take a limited number of orders each week to ensure every piece receives full attention.
+            </p>
+            <Link href="/order" className="cakish-button inline-flex">
+              Reserve Yours
+            </Link>
+          </div>
+        </section>
+
+        {/* Story Teaser Section */}
+        <section className="border-b border-[color:var(--line)] px-4 py-14 md:px-10 md:py-22">
+          <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-2 md:items-center">
+            <div className="space-y-5">
+              <span className="section-label">The Story</span>
+              <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+                Built from a home kitchen. Designed for your table.
+              </h2>
+              <p className="max-w-xl text-base leading-7 text-[color:var(--body-copy)] md:text-lg md:leading-8">
+                Cakish began with one question — what if a pavlova could feel like a gift? What started as a personal obsession with meringue architecture became something worth sharing.
+              </p>
+              <Link href="/story" className="cakish-button-secondary inline-flex">
+                Read Our Story →
+              </Link>
+            </div>
+            <div className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 shadow-[0_24px_60px_rgba(53,45,34,0.08)] md:rounded-[2.5rem]">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] md:rounded-[2.5rem]">
+                <Image
+                  src={assetPath("/images/gallery-four.jpeg")}
+                  alt="Cakish pavlova on a beautifully styled table — the story behind the brand."
+                  fill
+                  className="object-cover"
+                />
               </div>
             </div>
           </div>
