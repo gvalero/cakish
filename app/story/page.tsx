@@ -32,8 +32,8 @@ export default function StoryPage() {
             <div className="relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_24px_60px_rgba(53,45,34,0.08)] md:min-h-[30rem] md:rounded-[2.5rem] md:p-4">
               <div className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.6rem] md:min-h-[27rem] md:rounded-[2rem]">
                 <Image
-                  src={assetPath("/images/gallery-two.jpeg")}
-                  alt="Cakish modern pavlova displayed on a celebration table."
+                  src={assetPath("/images/gallery-four.jpeg")}
+                  alt="Cakish modern pavlova styled on a beautiful table with white roses and warm lighting."
                   fill
                   className="object-cover"
                 />

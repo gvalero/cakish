@@ -25,7 +25,7 @@ export function OrderConfigurator() {
     return {
       unitPrice,
       total,
-      floralSurcharge: finish.surcharge,
+      finishSurcharge: finish.surcharge,
     };
   }, [finish.surcharge, quantity, size.basePrice]);
 
@@ -52,6 +52,7 @@ export function OrderConfigurator() {
   return (
     <>
       <section className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        {/* Left: Configurator */}
         <div className="space-y-6 rounded-[2rem] border border-[color:var(--line)] bg-white/75 p-5 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:rounded-[2.6rem] md:p-8">
           <div className="space-y-3">
             <span className="section-label">Configurator</span>
@@ -64,6 +65,7 @@ export function OrderConfigurator() {
             </p>
           </div>
 
+          {/* Size selection */}
           <div className="space-y-4">
             <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
               <h3 className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
@@ -108,6 +110,7 @@ export function OrderConfigurator() {
             </div>
           </div>
 
+          {/* Finish selection */}
           <div className="space-y-4">
             <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
               <h3 className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
@@ -152,6 +155,7 @@ export function OrderConfigurator() {
             </div>
           </div>
 
+          {/* Quantity */}
           <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-[rgba(255,255,255,0.75)] p-4 md:grid-cols-[auto_1fr] md:items-center md:rounded-[2rem] md:p-5">
             <div>
               <p className="text-sm uppercase tracking-[0.22em] text-[color:var(--soft-gold)]">
@@ -182,6 +186,7 @@ export function OrderConfigurator() {
           </div>
         </div>
 
+        {/* Right: Order Summary */}
         <aside className="space-y-5 rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.86),rgba(243,239,233,0.94))] p-5 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:rounded-[2.6rem] md:p-8">
           <div className="space-y-3">
             <span className="section-label">Order Summary</span>
@@ -211,10 +216,10 @@ export function OrderConfigurator() {
                 <span>EUR {size.basePrice}</span>
               </div>
               <div className="flex justify-between gap-4">
-                <span>Signature Floral Finish</span>
+                <span>{finish.label}</span>
                 <span>
-                  {pricing.floralSurcharge > 0
-                    ? `+EUR ${pricing.floralSurcharge}`
+                  {pricing.finishSurcharge > 0
+                    ? `+EUR ${pricing.finishSurcharge}`
                     : "Included"}
                 </span>
               </div>
@@ -227,19 +232,6 @@ export function OrderConfigurator() {
                 <span>EUR {pricing.total}</span>
               </div>
             </div>
-          </div>
-
-          <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-white/70 p-4 md:rounded-[2rem] md:p-5">
-            {siteContent.collectionHighlights.map((item) => (
-              <div key={item.title}>
-                <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
-                  {item.title}
-                </p>
-                <p className="mt-1 text-sm leading-6 text-[color:var(--muted-copy)]">
-                  {item.copy}
-                </p>
-              </div>
-            ))}
           </div>
 
           <div className="flex flex-col gap-4">
@@ -266,6 +258,7 @@ export function OrderConfigurator() {
         </aside>
       </section>
 
+      {/* Checkout overlay */}
       {drawerOpen ? (
         <div
           className="fixed inset-0 z-50 bg-[rgba(32,28,24,0.36)] backdrop-blur-sm"
@@ -378,14 +371,14 @@ export function OrderConfigurator() {
               <p className="text-base leading-7 text-[color:var(--body-copy)]">
                 Direct online payment will be connected in a future release.
                 For now, use the enquiry option to reserve your date and confirm
-                collection details personally.
+                your order details.
               </p>
               <button
                 type="button"
+                className="cakish-button-secondary"
                 onClick={() => setSoonOpen(false)}
-                className="cakish-button-secondary mx-auto"
               >
-                Return To Preview
+                Got it
               </button>
             </div>
           </div>
