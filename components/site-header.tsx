@@ -24,7 +24,7 @@ export function SiteHeader() {
         <Link href="/" className="group inline-flex items-center gap-3 self-center md:self-auto">
           <BrandLogo
             priority
-            className="h-16 w-16 object-contain transition duration-200 group-hover:translate-y-[-1px] md:h-24 md:w-24"
+            className="h-20 w-20 object-contain transition duration-200 group-hover:translate-y-[-1px] md:h-28 md:w-28"
           />
           <div className="min-w-0">
             <p className="font-serif text-2xl leading-none tracking-[-0.03em] text-[color:var(--deep-charcoal)] md:text-4xl">

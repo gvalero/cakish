@@ -7,7 +7,7 @@ export function SiteFooter() {
     <footer className="border-t border-[color:var(--line)] px-4 py-10 md:px-10">
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
         <div className="space-y-3 text-center md:text-left">
-          <BrandLogo className="mx-auto h-20 w-20 object-contain md:mx-0 md:h-24 md:w-24" />
+          <BrandLogo className="mx-auto h-24 w-24 object-contain md:mx-0 md:h-32 md:w-32" />
           <p className="mx-auto max-w-xl text-sm leading-6 text-[color:var(--muted-copy)] md:mx-0">
             {siteContent.footerCopy}
           </p>
