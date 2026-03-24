@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { assetPath } from "@/lib/asset-path";
 import { siteContent } from "@/lib/site-data";
 
 export const metadata = {
@@ -31,7 +32,7 @@ export default function StoryPage() {
             <div className="relative min-h-[30rem] overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/70 p-4 shadow-[0_24px_60px_rgba(53,45,34,0.08)]">
               <div className="relative h-full min-h-[27rem] overflow-hidden rounded-[2rem]">
                 <Image
-                  src="/images/gallery-two.jpeg"
+                  src={assetPath("/images/gallery-two.jpeg")}
                   alt="Cakish modern pavlova displayed on a celebration table."
                   fill
                   className="object-cover"

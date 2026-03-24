@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { assetPath } from "@/lib/asset-path";
 import { productConfig, siteContent } from "@/lib/site-data";
 
 const madeForMoments = [
@@ -67,7 +68,7 @@ export default function Home() {
               <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/70 p-4 shadow-[0_30px_80px_rgba(53,45,34,0.12)]">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
                   <Image
-                    src="/images/hero-pavlova.jpeg"
+                    src={assetPath("/images/hero-pavlova.jpeg")}
                     alt="The Cakish Modern Pavlova decorated with fresh fruit and flowers."
                     fill
                     className="object-cover"
@@ -137,7 +138,7 @@ export default function Home() {
               <div className="relative min-h-[34rem] overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/70 p-4 shadow-[0_24px_60px_rgba(53,45,34,0.08)]">
                 <div className="relative h-full min-h-[30rem] overflow-hidden rounded-[2rem]">
                   <Image
-                    src="/images/gallery-one.jpeg"
+                    src={assetPath("/images/gallery-one.jpeg")}
                     alt="Close-up of a decorated modern pavlova."
                     fill
                     className="object-cover"
@@ -165,7 +166,7 @@ export default function Home() {
                   >
                     <div className="relative h-full min-h-[12rem] overflow-hidden rounded-[1.5rem]">
                       <Image
-                        src={image.src}
+                        src={assetPath(image.src)}
                         alt={image.alt}
                         fill
                         className="object-cover"
