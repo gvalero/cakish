@@ -47,8 +47,11 @@ export default function Home() {
         {/* Hero Section */}
         <section className="border-b border-[color:var(--line)] px-4 pb-14 pt-8 md:px-10 md:pb-24 md:pt-16">
           <div className="mx-auto grid max-w-7xl gap-8 md:gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-            <div className="space-y-6 md:space-y-8">
-              <span className="inline-flex max-w-full rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--soft-gold)] md:text-[0.7rem] md:tracking-[0.32em]">
+
+            {/* On mobile: image first. On desktop: text left, image right (default grid order) */}
+            {/* Text column — order-2 on mobile, order-1 on desktop */}
+            <div className="order-2 space-y-6 lg:order-1 md:space-y-8">
+              <span className="hidden md:inline-flex max-w-full rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--soft-gold)] md:text-[0.7rem] md:tracking-[0.32em]">
                 Cakish · Quietly Luxurious Celebrations
               </span>
               <div className="space-y-4 md:space-y-6">
@@ -58,7 +61,7 @@ export default function Home() {
                 <p className="max-w-xl font-serif text-xl italic leading-8 text-[color:var(--soft-gold)] md:text-2xl">
                   A contemporary centrepiece — sculptural, seasonal, designed to be remembered.
                 </p>
-                <p className="max-w-2xl text-base leading-7 text-[color:var(--body-copy)] md:text-xl md:leading-8">
+                <p className="hidden md:block max-w-2xl text-base leading-7 text-[color:var(--body-copy)] md:text-xl md:leading-8">
                   Not a traditional pavlova. A contemporary reinterpretation — built on a crisp meringue base, finished with hand-piped cream and seasonal fruit arranged with editorial precision. Every pavlova is made fresh to order, designed to hold the table.
                 </p>
               </div>
@@ -90,9 +93,19 @@ export default function Home() {
                   Discover The Story
                 </Link>
               </div>
+
+              {/* Description shown below CTA on mobile only */}
+              <p className="md:hidden max-w-2xl text-base leading-7 text-[color:var(--body-copy)]">
+                Not a traditional pavlova. A contemporary reinterpretation — built on a crisp meringue base, finished with hand-piped cream and seasonal fruit arranged with editorial precision. Every pavlova is made fresh to order, designed to hold the table.
+              </p>
             </div>
 
-            <div className="relative">
+            {/* Image column — order-1 on mobile, order-2 on desktop */}
+            <div className="relative order-1 lg:order-2">
+              {/* Section label shown above image on mobile */}
+              <span className="mb-4 inline-flex md:hidden max-w-full rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-[color:var(--soft-gold)]">
+                Cakish · Quietly Luxurious Celebrations
+              </span>
               <div className="absolute inset-x-[12%] -top-5 h-20 rounded-full bg-[radial-gradient(circle,_rgba(216,167,167,0.24),_transparent_70%)] blur-2xl" />
               <div className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_30px_80px_rgba(53,45,34,0.12)] md:rounded-[2.5rem] md:p-4">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
@@ -114,6 +127,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
           </div>
         </section>
 
