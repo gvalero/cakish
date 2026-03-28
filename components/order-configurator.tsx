@@ -1,10 +1,33 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { productConfig, siteContent } from "@/lib/site-data";
+import { assetPath } from "@/lib/asset-path";
 
 type SizeKey = keyof typeof productConfig.sizes;
 type FinishKey = keyof typeof productConfig.finishes;
+
+// Image map: size + finish → image path
+const productImages: Record<SizeKey, Record<FinishKey, string>> = {
+  '6"': {
+    "strawberry-floral-finish": "/images/order_size_6inch.jpg",
+    "patisserie-sliced-finish": "/images/order_finish_chopped.jpg",
+  },
+  '8"': {
+    "strawberry-floral-finish": "/images/order_finish_floral.jpg",
+    "patisserie-sliced-finish": "/images/order_size_8inch.jpg",
+  },
+  '12"': {
+    "strawberry-floral-finish": "/images/order_size_12inch.jpg",
+    "patisserie-sliced-finish": "/images/order_finish_chopped.jpg",
+  },
+};
+
+const finishLabels: Record<FinishKey, string> = {
+  "strawberry-floral-finish": "Strawberry Floral Finish",
+  "patisserie-sliced-finish": "Patisserie Sliced Finish",
+};
 
 export function OrderConfigurator() {
   const [selectedSize, setSelectedSize] = useState<SizeKey>('8"');
@@ -17,6 +40,8 @@ export function OrderConfigurator() {
 
   const size = productConfig.sizes[selectedSize];
   const finish = productConfig.finishes[selectedFinish];
+
+  const currentImage = productImages[selectedSize][selectedFinish];
 
   const pricing = useMemo(() => {
     const unitPrice = size.basePrice + finish.surcharge;
@@ -51,8 +76,69 @@ export function OrderConfigurator() {
 
   return (
     <>
-      <section className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        {/* Left: Configurator */}
+      {/* ── Dynamic Product Image Panel ── */}
+      {/* Mobile: full-width image above configurator */}
+      <div className="lg:hidden w-full overflow-hidden rounded-[2rem] border border-[color:var(--line)] shadow-[0_24px_70px_rgba(53,45,34,0.10)]">
+        <div className="relative w-full" style={{ paddingBottom: "75%" }}>
+          <Image
+            key={currentImage}
+            src={assetPath(currentImage)}
+            alt={`${selectedSize} Cakish Modern Pavlova with ${finishLabels[selectedFinish]}`}
+            fill
+            className="object-cover transition-opacity duration-500"
+            sizes="100vw"
+            priority
+          />
+          {/* Overlay label */}
+          <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-2 bg-gradient-to-t from-black/40 to-transparent p-4 md:p-5">
+            <div>
+              <p className="font-serif text-xl text-white drop-shadow md:text-2xl">
+                {selectedSize} · {finish.label}
+              </p>
+              <p className="text-sm uppercase tracking-[0.18em] text-white/80 drop-shadow">
+                EUR {pricing.unitPrice} per pavlova
+              </p>
+            </div>
+            <span className="rounded-full border border-white/40 bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+              Live Preview
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Main Configurator Grid ── */}
+      <section className="grid gap-8 lg:grid-cols-[0.9fr_1.05fr_0.95fr]">
+
+        {/* Left: Dynamic Image Panel — desktop only */}
+        <div className="hidden lg:flex flex-col overflow-hidden rounded-[2rem] border border-[color:var(--line)] shadow-[0_24px_70px_rgba(53,45,34,0.10)] md:rounded-[2.6rem]">
+          <div className="relative flex-1 min-h-[480px]">
+            <Image
+              key={currentImage}
+              src={assetPath(currentImage)}
+              alt={`${selectedSize} Cakish Modern Pavlova with ${finishLabels[selectedFinish]}`}
+              fill
+              className="object-cover transition-opacity duration-500"
+              sizes="(min-width: 1024px) 30vw, 100vw"
+              priority
+            />
+            {/* Overlay label */}
+            <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-2 bg-gradient-to-t from-black/40 to-transparent p-5">
+              <div>
+                <p className="font-serif text-xl text-white drop-shadow">
+                  {selectedSize} · {finish.label}
+                </p>
+                <p className="text-sm uppercase tracking-[0.18em] text-white/80 drop-shadow">
+                  EUR {pricing.unitPrice} per pavlova
+                </p>
+              </div>
+              <span className="rounded-full border border-white/40 bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+                Live Preview
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Middle: Configurator */}
         <div className="space-y-6 rounded-[2rem] border border-[color:var(--line)] bg-white/75 p-5 shadow-[0_24px_70px_rgba(53,45,34,0.08)] md:rounded-[2.6rem] md:p-8">
           <div className="space-y-3">
             <span className="section-label">Configurator</span>
@@ -75,7 +161,7 @@ export function OrderConfigurator() {
                 Base pricing
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-3 grid-cols-3">
               {(
                 Object.entries(productConfig.sizes) as Array<
                   [SizeKey, (typeof productConfig.sizes)[SizeKey]]
@@ -89,19 +175,19 @@ export function OrderConfigurator() {
                     type="button"
                     aria-pressed={active}
                     onClick={() => setSelectedSize(key)}
-                    className={`rounded-[2rem] border p-5 text-left transition ${
+                    className={`rounded-[1.6rem] border p-4 text-left transition md:rounded-[2rem] md:p-5 ${
                       active
                         ? "border-[color:var(--soft-gold)] bg-[rgba(198,167,105,0.12)] shadow-[0_18px_40px_rgba(198,167,105,0.16)]"
                         : "border-[color:var(--line)] bg-[rgba(255,255,255,0.72)] hover:border-[color:var(--soft-gold)]/50"
                     }`}
                   >
-                    <p className="font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
+                    <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
                       {key}
                     </p>
-                    <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[color:var(--soft-gold)] md:text-sm md:tracking-[0.2em]">
                       EUR {option.basePrice}
                     </p>
-                    <p className="mt-3 text-sm leading-6 text-[color:var(--muted-copy)]">
+                    <p className="mt-2 hidden text-sm leading-6 text-[color:var(--muted-copy)] md:block">
                       {option.description}
                     </p>
                   </button>
@@ -120,7 +206,7 @@ export function OrderConfigurator() {
                 Premium enhancement
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
               {(
                 Object.entries(productConfig.finishes) as Array<
                   [FinishKey, (typeof productConfig.finishes)[FinishKey]]
@@ -134,19 +220,19 @@ export function OrderConfigurator() {
                     type="button"
                     aria-pressed={active}
                     onClick={() => setSelectedFinish(key)}
-                    className={`rounded-[2rem] border p-5 text-left transition ${
+                    className={`rounded-[1.6rem] border p-4 text-left transition md:rounded-[2rem] md:p-5 ${
                       active
                         ? "border-[color:var(--soft-gold)] bg-[rgba(216,167,167,0.12)] shadow-[0_18px_40px_rgba(216,167,167,0.14)]"
                         : "border-[color:var(--line)] bg-[rgba(255,255,255,0.72)] hover:border-[color:var(--muted-rose)]/60"
                     }`}
                   >
-                    <p className="font-serif text-2xl leading-tight text-[color:var(--deep-charcoal)] md:text-3xl">
+                    <p className="font-serif text-xl leading-tight text-[color:var(--deep-charcoal)] md:text-2xl">
                       {option.label}
                     </p>
-                    <p className="mt-2 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[color:var(--soft-gold)] md:text-sm md:tracking-[0.2em]">
                       {option.surcharge > 0 ? `+EUR ${option.surcharge}` : "Included"}
                     </p>
-                    <p className="mt-3 text-sm leading-6 text-[color:var(--muted-copy)]">
+                    <p className="mt-2 text-sm leading-6 text-[color:var(--muted-copy)]">
                       {option.description}
                     </p>
                   </button>
@@ -168,7 +254,7 @@ export function OrderConfigurator() {
             <div className="flex items-center gap-3 justify-self-start md:justify-self-end">
               <button
                 type="button"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl md:h-12 md:w-12"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl"
                 onClick={() => setQuantity((value) => Math.max(1, value - 1))}
                 aria-label="Decrease quantity"
               >
@@ -176,7 +262,7 @@ export function OrderConfigurator() {
               </button>
               <button
                 type="button"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl md:h-12 md:w-12"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[color:var(--line)] bg-white text-2xl"
                 onClick={() => setQuantity((value) => value + 1)}
                 aria-label="Increase quantity"
               >
@@ -261,129 +347,125 @@ export function OrderConfigurator() {
       {/* Checkout overlay */}
       {drawerOpen ? (
         <div
-          className="fixed inset-0 z-50 bg-[rgba(32,28,24,0.36)] backdrop-blur-sm"
-          aria-hidden="true"
-          onClick={() => {
-            setDrawerOpen(false);
-            setSoonOpen(false);
-          }}
-        />
-      ) : null}
-
-      <aside
-        aria-hidden={!drawerOpen}
-        className={`fixed inset-y-0 right-0 z-[60] flex w-full max-w-xl flex-col overflow-y-auto border-l border-[color:var(--line)] bg-[linear-gradient(180deg,#fbfaf8_0%,#f4ede4_100%)] p-4 shadow-[-24px_0_60px_rgba(53,45,34,0.18)] transition-transform duration-300 md:p-8 ${
-          drawerOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="section-label">Checkout Preview</p>
-            <h2 className="mt-4 font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
-              Secure checkout, styled for what comes next.
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setDrawerOpen(false);
-              setSoonOpen(false);
-            }}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-white/80 text-xl"
-            aria-label="Close checkout preview"
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-end justify-end"
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={() => setDrawerOpen(false)}
+          />
+          {/* Drawer */}
+          <aside
+            className="relative z-[60] flex w-full max-w-xl flex-col overflow-y-auto border-l border-[color:var(--line)] bg-[linear-gradient(180deg,#fbfaf8_0%,#f4ede4_100%)] p-4 shadow-[-24px_0_60px_rgba(53,45,34,0.18)] md:p-8"
+            style={{ height: "100dvh" }}
           >
-            ×
-          </button>
-        </div>
-
-        <div className="mt-6 space-y-4 md:mt-8 md:space-y-5">
-          <div className="rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
-                  {selectedSize}
-                </p>
-                <p className="mt-1 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
-                  {finish.label}
-                </p>
+                <p className="section-label">Checkout Preview</p>
+                <h2 className="mt-4 font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
+                  Secure checkout, styled for what comes next.
+                </h2>
               </div>
-              <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
-                EUR {pricing.total}
-              </p>
-            </div>
-          </div>
-
-          <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
-            {["Full name", "Email address", "Preferred collection date"].map(
-              (field) => (
-                <label key={field} className="space-y-2 text-sm font-medium">
-                  <span className="uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
-                    {field}
-                  </span>
-                  <input
-                    aria-label={field}
-                    readOnly
-                    placeholder={field}
-                    className="w-full rounded-[1.2rem] border border-[color:var(--line)] bg-[rgba(248,246,242,0.95)] px-4 py-3 text-base text-[color:var(--body-copy)] outline-none"
-                  />
-                </label>
-              ),
-            )}
-          </div>
-
-          <div className="rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 text-sm leading-6 text-[color:var(--body-copy)] md:rounded-[2rem] md:p-5">
-            <p className="font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
-              Fulfilment
-            </p>
-            <p className="mt-2">{siteContent.collectionModel}</p>
-          </div>
-        </div>
-
-        <div className="mt-8 space-y-4 pb-4 md:mt-auto md:pt-8">
-          <button
-            type="button"
-            className="cakish-button w-full"
-            onClick={() => setSoonOpen(true)}
-          >
-            Pay Securely Online
-          </button>
-          <p className="text-sm leading-6 text-[color:var(--muted-copy)]">
-            This button is already positioned where direct payments will be
-            connected later through your chosen provider.
-          </p>
-        </div>
-
-        {soonOpen ? (
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="payments-soon-title"
-            className="absolute inset-3 grid place-items-center rounded-[2rem] border border-white/40 bg-[rgba(248,246,242,0.9)] p-5 text-center shadow-[0_18px_50px_rgba(53,45,34,0.14)] backdrop-blur-md md:inset-6 md:rounded-[2.4rem] md:p-8"
-          >
-            <div className="max-w-sm space-y-4">
-              <p className="section-label">Soon</p>
-              <h3
-                id="payments-soon-title"
-                className="font-serif text-4xl text-[color:var(--deep-charcoal)] md:text-5xl"
-              >
-                Payments are coming soon.
-              </h3>
-              <p className="text-base leading-7 text-[color:var(--body-copy)]">
-                Direct online payment will be connected in a future release.
-                For now, use the enquiry option to reserve your date and confirm
-                your order details.
-              </p>
               <button
                 type="button"
-                className="cakish-button-secondary"
-                onClick={() => setSoonOpen(false)}
+                onClick={() => {
+                  setDrawerOpen(false);
+                  setSoonOpen(false);
+                }}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--line)] bg-white/80 text-xl"
+                aria-label="Close checkout preview"
               >
-                Got it
+                ×
               </button>
             </div>
-          </div>
-        ) : null}
-      </aside>
+            <div className="mt-6 space-y-4 md:mt-8 md:space-y-5">
+              <div className="rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
+                      {selectedSize}
+                    </p>
+                    <p className="mt-1 text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                      {finish.label}
+                    </p>
+                  </div>
+                  <p className="font-serif text-2xl text-[color:var(--deep-charcoal)] md:text-3xl">
+                    EUR {pricing.total}
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-4 rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[2rem] md:p-5">
+                {["Full name", "Email address", "Preferred collection date"].map(
+                  (field) => (
+                    <label key={field} className="space-y-2 text-sm font-medium">
+                      <span className="uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
+                        {field}
+                      </span>
+                      <input
+                        aria-label={field}
+                        readOnly
+                        placeholder={field}
+                        className="w-full rounded-[1.2rem] border border-[color:var(--line)] bg-[rgba(248,246,242,0.95)] px-4 py-3 text-base text-[color:var(--body-copy)] outline-none"
+                      />
+                    </label>
+                  ),
+                )}
+              </div>
+              <div className="rounded-[1.6rem] border border-[color:var(--line)] bg-white/80 p-4 text-sm leading-6 text-[color:var(--body-copy)] md:rounded-[2rem] md:p-5">
+                <p className="font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
+                  Fulfilment
+                </p>
+                <p className="mt-2">{siteContent.collectionModel}</p>
+              </div>
+            </div>
+            <div className="mt-8 space-y-4 pb-4 md:mt-auto md:pt-8">
+              <button
+                type="button"
+                className="cakish-button w-full"
+                onClick={() => setSoonOpen(true)}
+              >
+                Pay Securely Online
+              </button>
+              <p className="text-sm leading-6 text-[color:var(--muted-copy)]">
+                This button is already positioned where direct payments will be
+                connected later through your chosen provider.
+              </p>
+            </div>
+            {soonOpen ? (
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="payments-soon-title"
+                className="absolute inset-3 grid place-items-center rounded-[2rem] border border-white/40 bg-[rgba(248,246,242,0.9)] p-5 text-center shadow-[0_18px_50px_rgba(53,45,34,0.14)] backdrop-blur-md md:inset-6 md:rounded-[2.4rem] md:p-8"
+              >
+                <div className="max-w-sm space-y-4">
+                  <p className="section-label">Soon</p>
+                  <h3
+                    id="payments-soon-title"
+                    className="font-serif text-4xl text-[color:var(--deep-charcoal)] md:text-5xl"
+                  >
+                    Payments are coming soon.
+                  </h3>
+                  <p className="text-base leading-7 text-[color:var(--body-copy)]">
+                    Direct online payment will be connected in a future release.
+                    For now, use the enquiry option to reserve your date and confirm
+                    your order details.
+                  </p>
+                  <button
+                    type="button"
+                    className="cakish-button-secondary"
+                    onClick={() => setSoonOpen(false)}
+                  >
+                    Got it
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </aside>
+        </div>
+      ) : null}
     </>
   );
 }

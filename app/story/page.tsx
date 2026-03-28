@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { assetPath } from "@/lib/asset-path";
@@ -85,6 +86,27 @@ export default function StoryPage() {
                     </p>
                   </div>
                 ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Story CTA — Start Your Order */}
+          <section className="rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(243,239,233,0.95))] p-8 text-center shadow-[0_24px_70px_rgba(53,45,34,0.07)] md:rounded-[2.5rem] md:p-14">
+            <div className="mx-auto max-w-2xl space-y-5">
+              <div className="mx-auto h-px w-12 bg-[color:var(--soft-gold)]" />
+              <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+                Ready to place your order?
+              </h2>
+              <p className="text-base leading-7 text-[color:var(--body-copy)] md:text-lg md:leading-8">
+                Each pavlova is made fresh to order. Select your size, choose your finish, and reserve your date.
+              </p>
+              <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row sm:justify-center">
+                <Link href="/order" className="cakish-button">
+                  Start Your Order
+                </Link>
+                <Link href="/" className="cakish-button-secondary">
+                  Back to Home
+                </Link>
               </div>
             </div>
           </section>

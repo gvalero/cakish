@@ -33,8 +33,8 @@ const madeForMoments = [
   {
     heading: "Meaningful Celebrations",
     copy: "Milestones deserve something made, not bought.",
-    image: "/images/occasion-hosting.jpeg",
-    alt: "Cakish pavlova for a meaningful milestone celebration.",
+    image: "/images/occasion-meaningful.jpeg",
+    alt: "Cakish pavlova for a meaningful milestone celebration, styled with a gift tag and gold confetti.",
   },
 ];
 
