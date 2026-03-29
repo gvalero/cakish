@@ -19,37 +19,42 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(248,246,242,0.82)] px-4 backdrop-blur-xl md:px-10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between md:gap-4 md:py-4">
-        <Link href="/" className="group inline-flex items-center gap-3 self-center md:self-auto">
+    <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.94)] backdrop-blur-md">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4 md:px-10 md:py-5">
+        {/* Logo + wordmark */}
+        <Link href="/" className="group inline-flex items-center gap-2.5">
           <BrandLogo
             priority
-            className="h-20 w-20 object-contain transition duration-200 group-hover:translate-y-[-1px] md:h-28 md:w-28"
+            className="h-10 w-10 object-contain md:h-12 md:w-12"
           />
-          <div className="min-w-0">
-            <p className="font-serif text-2xl leading-none tracking-[-0.03em] text-[color:var(--deep-charcoal)] md:text-4xl">
+          <div>
+            <p className="font-serif text-xl leading-none tracking-[-0.02em] text-[color:var(--deep-charcoal)] md:text-2xl">
               Cakish
             </p>
-            <p className="mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)] md:text-[0.7rem] md:tracking-[0.28em]">
-              Modern Pavlova Atelier
+            <p className="mt-0.5 text-[0.55rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+              Modern Pavlova
             </p>
           </div>
         </Link>
 
-        <nav className="flex w-full items-center gap-2 overflow-x-auto pb-1 md:flex md:w-auto md:flex-wrap md:justify-end md:overflow-visible md:pb-0 md:gap-3">
+        {/* Nav */}
+        <nav className="flex items-center gap-6 md:gap-8">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`shrink-0 rounded-full border px-4 py-2 text-center text-[0.68rem] font-semibold uppercase tracking-[0.16em] transition md:text-sm md:tracking-[0.18em] ${
+                className={`text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${
                   active
-                    ? "border-[color:var(--soft-gold)] bg-[rgba(198,167,105,0.12)] text-[color:var(--deep-charcoal)] shadow-[0_4px_14px_rgba(198,167,105,0.18)]"
-                    : "border-[color:var(--line)] bg-white/80 text-[color:var(--muted-copy)] hover:border-[color:var(--line)] hover:bg-white/75 hover:text-[color:var(--deep-charcoal)] md:border-transparent md:bg-transparent"
+                    ? "text-[color:var(--deep-charcoal)]"
+                    : "text-[color:var(--muted-copy)] hover:text-[color:var(--deep-charcoal)]"
                 }`}
               >
                 {item.label}
+                {active && (
+                  <span className="mt-0.5 block h-px w-full bg-[color:var(--soft-gold)]" />
+                )}
               </Link>
             );
           })}
