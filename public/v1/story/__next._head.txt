@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[97367,["/v1/_next/static/chunks/01xlw8hd842-c.js","/v1/_next/static/chunks/0d3shmwh5_nmn.js"],"ViewportBoundary"]
+3:I[97367,["/v1/_next/static/chunks/01xlw8hd842-c.js","/v1/_next/static/chunks/0d3shmwh5_nmn.js"],"MetadataBoundary"]
+4:"$Sreact.suspense"
+5:I[27201,["/v1/_next/static/chunks/01xlw8hd842-c.js","/v1/_next/static/chunks/0d3shmwh5_nmn.js"],"IconMark"]
+0:{"rsc":["$","$1","h",{"children":[null,["$","$L2",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L3",null,{"children":["$","$4",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Story | Cakish.ie"}],["$","meta","1",{"name":"description","content":"The story behind Cakish and its modern take on pavlova."}],["$","link","2",{"rel":"icon","href":"/v1/favicon.ico?favicon.0f-srpu9j8w4y.ico","sizes":"16x16","type":"image/x-icon"}],["$","link","3",{"rel":"icon","href":"/v1/icon.png?icon.084p~9m9-co30.png","sizes":"512x512","type":"image/png"}],["$","link","4",{"rel":"apple-touch-icon","href":"/v1/apple-icon.png?apple-icon.0~7ci3c.evxgh.png","sizes":"180x180","type":"image/png"}],["$","$L5","5",{}]]}]}]}],null]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"kwh5Hzt0mupJd5J-Sa2sv"}

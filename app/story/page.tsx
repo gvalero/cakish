@@ -14,15 +14,19 @@ export default function StoryPage() {
   return (
     <>
       <SiteHeader />
-      <main className="flex-1 px-4 pb-14 pt-8 md:px-10 md:pb-22 md:pt-16">
-        <div className="mx-auto max-w-7xl space-y-10 md:space-y-12">
-          <section className="grid gap-8 md:gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+      <main className="flex-1 px-6 pb-20 pt-12 md:px-10 md:pb-28 md:pt-16">
+        <div className="mx-auto max-w-5xl space-y-16 md:space-y-20">
+
+          {/* ── Hero section ── */}
+          <section className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div className="space-y-5">
-              <span className="section-label">Story</span>
-              <h1 className="font-serif text-4xl leading-[0.95] tracking-[-0.03em] text-[color:var(--deep-charcoal)] md:text-6xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--soft-gold)]">
+                Our Story
+              </p>
+              <h1 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
                 A modern pavlova, interpreted with a softer kind of luxury.
               </h1>
-              <p className="max-w-xl text-base leading-7 text-[color:var(--body-copy)] md:text-lg md:leading-8">
+              <p className="text-base leading-7 text-[color:var(--body-copy)]">
                 Cakish does not aim to recreate tradition exactly. Instead, it
                 offers a refined, contemporary interpretation: lighter in mood,
                 more sculptural in presentation, and styled for the kinds of
@@ -30,77 +34,81 @@ export default function StoryPage() {
               </p>
             </div>
 
-            <div className="relative min-h-[22rem] overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white/70 p-3 shadow-[0_24px_60px_rgba(53,45,34,0.08)] md:min-h-[30rem] md:rounded-[2.5rem] md:p-4">
-              <div className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.6rem] md:min-h-[27rem] md:rounded-[2rem]">
-                <Image
-                  src={assetPath("/images/gallery-four.jpeg")}
-                  alt="Cakish modern pavlova styled on a beautiful table with white roses and warm lighting."
-                  fill
-                  className="object-cover"
-                />
-              </div>
+            {/* Image — mobile: full-width above text (order-first in DOM), desktop: right column */}
+            <div className="relative aspect-[4/3] overflow-hidden rounded-sm lg:aspect-[3/4]">
+              <Image
+                src={assetPath("/images/gallery-four.jpeg")}
+                alt="Cakish modern pavlova styled on a beautiful table with white roses and warm lighting."
+                fill
+                className="object-cover"
+                priority
+              />
             </div>
           </section>
 
-          <section className="grid gap-4 md:gap-5 md:grid-cols-3">
+          <hr className="cakish-rule" />
+
+          {/* ── Three pillars ── */}
+          <section className="grid gap-10 md:grid-cols-3">
             {siteContent.storyPillars.map((pillar) => (
-              <article
-                key={pillar.title}
-                className="rounded-[1.7rem] border border-[color:var(--line)] bg-white/75 p-5 shadow-[0_18px_45px_rgba(53,45,34,0.05)] md:rounded-[2rem] md:p-7"
-              >
-                <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+              <article key={pillar.title} className="space-y-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--soft-gold)]">
                   {pillar.title}
                 </p>
-                <p className="mt-3 font-serif text-2xl leading-tight text-[color:var(--deep-charcoal)] md:text-3xl">
+                <h2 className="font-serif text-2xl leading-tight text-[color:var(--deep-charcoal)]">
                   {pillar.heading}
-                </p>
-                <p className="mt-4 text-sm leading-6 text-[color:var(--body-copy)] md:text-base md:leading-7">
+                </h2>
+                <p className="text-sm leading-6 text-[color:var(--body-copy)]">
                   {pillar.copy}
                 </p>
               </article>
             ))}
           </section>
 
-          <section className="grid gap-6 rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(243,239,233,0.95))] p-6 shadow-[0_24px_70px_rgba(53,45,34,0.07)] md:grid-cols-2 md:rounded-[2.5rem] md:p-12">
-            <div>
-              <span className="section-label">How Collection Works</span>
-              <h2 className="font-serif text-3xl text-[color:var(--deep-charcoal)] md:text-4xl">
+          <hr className="cakish-rule" />
+
+          {/* ── Collection ── */}
+          <section className="grid gap-8 lg:grid-cols-2 lg:items-start">
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--soft-gold)]">
+                How Collection Works
+              </p>
+              <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)]">
                 Collection-first, with care built in.
               </h2>
-            </div>
-            <div className="space-y-5">
               <p className="text-base leading-7 text-[color:var(--body-copy)]">
                 {siteContent.collectionModel}
               </p>
-              <div className="grid gap-4">
-                {siteContent.collectionHighlights.map((item) => (
-                  <div
-                    key={item.title}
-                    className="rounded-[1.4rem] border border-[color:var(--line)] bg-white/80 p-4 md:rounded-[1.6rem] md:p-5"
-                  >
-                    <p className="text-sm uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-[color:var(--muted-copy)]">
-                      {item.copy}
-                    </p>
-                  </div>
-                ))}
-              </div>
+            </div>
+            <div className="space-y-3">
+              {siteContent.collectionHighlights.map((item) => (
+                <div
+                  key={item.title}
+                  className="border border-[color:var(--line)] bg-white p-4"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                    {item.title}
+                  </p>
+                  <p className="mt-1.5 text-sm leading-6 text-[color:var(--muted-copy)]">
+                    {item.copy}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* Story CTA — Start Your Order */}
-          <section className="rounded-[2rem] border border-[color:var(--line)] bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(243,239,233,0.95))] p-8 text-center shadow-[0_24px_70px_rgba(53,45,34,0.07)] md:rounded-[2.5rem] md:p-14">
-            <div className="mx-auto max-w-2xl space-y-5">
-              <div className="mx-auto h-px w-12 bg-[color:var(--soft-gold)]" />
-              <h2 className="font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+          <hr className="cakish-rule" />
+
+          {/* ── CTA ── */}
+          <section className="py-8 text-center">
+            <div className="mx-auto max-w-lg space-y-5">
+              <h2 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)]">
                 Ready to place your order?
               </h2>
-              <p className="text-base leading-7 text-[color:var(--body-copy)] md:text-lg md:leading-8">
+              <p className="text-base leading-7 text-[color:var(--body-copy)]">
                 Each pavlova is made fresh to order. Select your size, choose your finish, and reserve your date.
               </p>
-              <div className="flex flex-col items-center gap-4 pt-2 sm:flex-row sm:justify-center">
+              <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row sm:justify-center">
                 <Link href="/order" className="cakish-button">
                   Start Your Order
                 </Link>
@@ -110,6 +118,7 @@ export default function StoryPage() {
               </div>
             </div>
           </section>
+
         </div>
       </main>
       <SiteFooter />
