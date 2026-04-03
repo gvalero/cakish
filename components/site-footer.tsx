@@ -9,7 +9,7 @@ export function SiteFooter() {
         <div className="space-y-3 text-center md:text-left">
           <BrandLogo className="mx-auto h-24 w-24 object-contain md:mx-0 md:h-32 md:w-32" />
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
-            Premium pavlova centrepieces, handcrafted in Dublin.
+            Premium pavlova centrepieces, handcrafted in Wicklow.
           </p>
           <p className="mx-auto max-w-xl text-sm leading-6 text-[color:var(--muted-copy)] md:mx-0">
             {siteContent.footerCopy}

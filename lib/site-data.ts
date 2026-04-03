@@ -1,7 +1,7 @@
 export const siteContent = {
   productName: "The Cakish Modern Pavlova",
   collectionModel:
-    "Collection is currently the only fulfilment option. Primary collection is arranged from our home location, while Dublin collection is available on selected days. Delivery is not offered at this time.",
+    "Collection is currently the only fulfilment option. Collection is arranged from our home location in Wicklow, with the exact address shared after confirmation. Delivery is not offered at this time.",
   footerCopy:
     "A premium home bakery for birthdays, communions, elegant hosting, and meaningful gatherings. Collection details are confirmed personally after enquiry or order reservation.",
   collectionHighlights: [
@@ -10,8 +10,12 @@ export const siteContent = {
       copy: "Collection is arranged from our home location, with the exact address shared after confirmation.",
     },
     {
+      title: "Collection",
+      copy: "Collection is available from our home location in Wicklow, with the exact address shared after confirmation.",
+    },
+    {
       title: "Dublin collection",
-      copy: "Dublin collection is available on selected days only and should be confirmed in advance.",
+      copy: "Dublin collection may be offered in the future on selected days. Check back for updates.",
     },
     {
       title: "Delivery",
