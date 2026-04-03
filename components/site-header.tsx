@@ -19,7 +19,14 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.94)] backdrop-blur-md">
+    <>
+      {/* Under Construction Banner */}
+      <div className="bg-[color:var(--deep-charcoal)] px-4 py-3 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--soft-gold)] md:text-sm">
+          🚧&nbsp; Under Construction — Coming Soon &nbsp;🚧
+        </p>
+      </div>
+      <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.94)] backdrop-blur-md">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4 md:px-10 md:py-5">
         {/* Logo + wordmark */}
         <Link href="/" className="group inline-flex items-center gap-2.5">
@@ -61,5 +68,6 @@ export function SiteHeader() {
         </nav>
       </div>
     </header>
+    </>
   );
 }

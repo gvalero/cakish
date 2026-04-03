@@ -33,7 +33,7 @@ export default function Home() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--soft-gold)]">
-                    Handcrafted in Dublin
+                    Handcrafted in Wicklow
                   </p>
                   <h1 className="font-serif text-5xl leading-[1.0] tracking-[-0.02em] text-[color:var(--deep-charcoal)] md:text-6xl lg:text-7xl">
                     The Cakish<br />Modern Pavlova

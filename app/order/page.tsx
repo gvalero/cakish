@@ -4,8 +4,9 @@ import { OrderConfigurator } from "@/components/order-configurator";
 import { siteContent } from "@/lib/site-data";
 
 export const metadata = {
-  title: "Order | Cakish.ie",
-  description: "Select your size and finish for The Cakish Modern Pavlova.",
+  title: "Order Your Pavlova",
+  description: "Order a premium handcrafted pavlova from Cakish. Choose 6″, 8″, or 12″ with strawberry floral or patisserie sliced finish. Collection from Wicklow, Ireland.",
+  alternates: { canonical: "/order" },
 };
 
 export default function OrderPage() {

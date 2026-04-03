@@ -6,8 +6,9 @@ import { assetPath } from "@/lib/asset-path";
 import { siteContent } from "@/lib/site-data";
 
 export const metadata = {
-  title: "Story | Cakish.ie",
-  description: "The story behind Cakish and its modern take on pavlova.",
+  title: "Our Story",
+  description: "The story behind Cakish — a modern, refined pavlova handcrafted in Wicklow, Ireland. Made for birthdays, communions, and meaningful celebrations.",
+  alternates: { canonical: "/story" },
 };
 
 export default function StoryPage() {
