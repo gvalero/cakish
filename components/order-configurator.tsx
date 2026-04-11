@@ -90,7 +90,7 @@ export function OrderConfigurator() {
     }
     lines.push(`Quantity: ${quantity}`);
     if (priceDisplay.hasPrice) {
-      lines.push(`Estimated total: EUR ${priceDisplay.total}`);
+      lines.push(`Estimated total: EUR ${priceDisplay.total.toFixed(2)}`);
     }
     lines.push("");
     lines.push("Please let me know your availability and collection details. Thank you!");
@@ -380,7 +380,7 @@ export function OrderConfigurator() {
           <div className="flex justify-between border-t border-[color:var(--line)] pt-3 font-semibold text-[color:var(--deep-charcoal)]">
             <span>Estimated total</span>
             <span>
-              {priceDisplay.hasPrice ? `EUR ${priceDisplay.total}` : "Price on enquiry"}
+              {priceDisplay.hasPrice ? `EUR ${priceDisplay.total.toFixed(2)}` : "Price on enquiry"}
             </span>
           </div>
         </div>
