@@ -109,9 +109,23 @@ export function OrderConfigurator() {
   }, [product, selectedSize, selectedFillingOption, selectedFinishOption, showFinishOptions, topperMessage, quantity, priceDisplay]);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(inquirySummary);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2500);
+    try {
+      await navigator.clipboard.writeText(inquirySummary);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Fallback: select from a temporary textarea
+      const ta = document.createElement("textarea");
+      ta.value = inquirySummary;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+    }
   };
 
   const handleEmail = () => {
@@ -124,6 +138,16 @@ export function OrderConfigurator() {
     const text = encodeURIComponent(inquirySummary);
     window.open(`https://wa.me/?text=${text}`);
   };
+
+  // Close drawer on Escape key
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") { setDrawerOpen(false); setSoonOpen(false); }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [drawerOpen]);
 
   // Step counter
   let stepCount = 1;
