@@ -18,10 +18,10 @@ export default function Home() {
         >
           <div className="mx-auto max-w-6xl">
             {/* Mobile: image first */}
-            <div className="mb-8 overflow-hidden rounded-sm md:hidden">
+            <div className="mb-8 overflow-hidden rounded-sm lg:hidden">
               <div className="relative aspect-[4/5] w-full">
                 <Image
-                  src={assetPath("/images/products/strawberry-pavlova-hero.jpg")}
+                  src={assetPath("/images/products/hero-pavlova-new.jpg")}
                   alt="Cakish Strawberry Pavlova — handcrafted meringue topped with fresh strawberries arranged in a floral pattern, made in Wicklow, Ireland."
                   fill
                   className="object-cover"
@@ -75,7 +75,7 @@ export default function Home() {
               <div className="hidden overflow-hidden rounded-sm lg:block">
                 <div className="relative aspect-[4/5]">
                   <Image
-                    src={assetPath("/images/products/strawberry-pavlova-hero.jpg")}
+                    src={assetPath("/images/products/hero-pavlova-new.jpg")}
                     alt="Cakish Strawberry Pavlova — handcrafted meringue topped with fresh strawberries arranged in a floral pattern, made in Wicklow, Ireland."
                     fill
                     className="object-cover"

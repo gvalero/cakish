@@ -67,10 +67,12 @@ export function OrderConfigurator() {
   const priceDisplay = useMemo(() => {
     if (selectedSize.price > 0) {
       const unit = selectedSize.price;
-      return { unit, total: unit * quantity, hasPrice: true };
+      const topperCost = topperMessage.trim() ? product.topperPrice : 0;
+      const total = (unit + topperCost) * quantity;
+      return { unit, topperCost, total, hasPrice: true };
     }
-    return { unit: 0, total: 0, hasPrice: false };
-  }, [selectedSize, quantity]);
+    return { unit: 0, topperCost: 0, total: 0, hasPrice: false };
+  }, [selectedSize, quantity, topperMessage, product.topperPrice]);
 
   const inquirySummary = useMemo(() => {
     const lines = [
@@ -84,7 +86,7 @@ export function OrderConfigurator() {
       lines.push(`Finish: ${finishOptions.find((f) => f.id === selectedFinish)?.label}`);
     }
     if (topperMessage.trim()) {
-      lines.push(`Custom topper message: "${topperMessage.trim()}"`);
+      lines.push(`Custom topper message: "${topperMessage.trim()}" (+EUR ${product.topperPrice})`);
     }
     lines.push(`Quantity: ${quantity}`);
     if (priceDisplay.hasPrice) {
@@ -171,7 +173,7 @@ export function OrderConfigurator() {
           <legend className="mb-5">
             <StepLabel step={nextStep()} label="Select your size" />
           </legend>
-          <div className={`grid gap-3 ${product.sizes.length === 1 ? "grid-cols-1 max-w-xs" : "grid-cols-3"}`}>
+          <div className={`grid gap-3 ${product.sizes.length === 1 ? "grid-cols-1 max-w-xs" : "grid-cols-1 sm:grid-cols-3"}`}>
             {product.sizes.map((size) => {
               const active = size.id === selectedSizeId;
               return (
@@ -288,7 +290,7 @@ export function OrderConfigurator() {
             <legend className="mb-5">
               <StepLabel step={nextStep()} label="Custom topper message" />
               <p className="mt-1 text-xs text-[color:var(--muted-copy)]">
-                Optional — add a personal message to your pavlova
+                Optional — add a personal message to your pavlova (+EUR {product.topperPrice})
               </p>
             </legend>
             <input
@@ -367,7 +369,7 @@ export function OrderConfigurator() {
           )}
           {topperMessage.trim() && (
             <div className="flex justify-between gap-4">
-              <span className="flex-shrink-0">Topper</span>
+              <span className="flex-shrink-0">Topper (+EUR {product.topperPrice})</span>
               <span className="truncate text-right font-medium">&ldquo;{topperMessage.trim()}&rdquo;</span>
             </div>
           )}

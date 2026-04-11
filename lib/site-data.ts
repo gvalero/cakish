@@ -35,6 +35,8 @@ export interface Product {
   sizes: SizeOption[];
   /** Whether the product supports a custom topper message */
   hasTopper: boolean;
+  /** Price for custom topper message in EUR */
+  topperPrice: number;
   /** Whether the Strawberry sharing-size finishing options apply */
   hasFinishOptions: boolean;
 }
@@ -56,11 +58,12 @@ export const products: Product[] = [
       "/images/products/strawberry-pavlova-gallery-2.jpg",
     ],
     sizes: [
-      { id: "small", label: "Small", diameter: '6 inches', serves: "5–6", price: 0 },
-      { id: "medium", label: "Medium", diameter: '9 inches', serves: "8–12", price: 0 },
-      { id: "large", label: "Large", diameter: '12 inches', serves: "13–18", price: 0 },
+      { id: "small", label: "Small", diameter: '6 inches', serves: "5–6", price: 48 },
+      { id: "medium", label: "Medium", diameter: '9 inches', serves: "8–12", price: 72 },
+      { id: "large", label: "Large", diameter: '12 inches', serves: "13–18", price: 112 },
     ],
     hasTopper: true,
+    topperPrice: 5,
     hasFinishOptions: true,
   },
   {
@@ -73,9 +76,10 @@ export const products: Product[] = [
     image: "/images/products/generated-heart-pavlova.jpg",
     gallery: [],
     sizes: [
-      { id: "standard", label: "Standard", diameter: '9 inches', serves: "8–10", price: 0 },
+      { id: "standard", label: "Standard", diameter: '9 inches', serves: "8–10", price: 78 },
     ],
     hasTopper: true,
+    topperPrice: 5,
     hasFinishOptions: false,
   },
   {
@@ -88,11 +92,12 @@ export const products: Product[] = [
     image: "/images/products/generated-mixed-berries-medium.jpg",
     gallery: [],
     sizes: [
-      { id: "small", label: "Small", diameter: '6 inches', serves: "5–7", price: 0 },
-      { id: "medium", label: "Medium", diameter: '9 inches', serves: "8–12", price: 0 },
-      { id: "large", label: "Large", diameter: '12 inches', serves: "13–18", price: 0 },
+      { id: "small", label: "Small", diameter: '6 inches', serves: "5–7", price: 52 },
+      { id: "medium", label: "Medium", diameter: '9 inches', serves: "8–12", price: 76 },
+      { id: "large", label: "Large", diameter: '12 inches', serves: "13–18", price: 118 },
     ],
     hasTopper: true,
+    topperPrice: 5,
     hasFinishOptions: false,
   },
   {
@@ -105,11 +110,12 @@ export const products: Product[] = [
     image: "/images/products/generated-raspberry-medium.jpg",
     gallery: [],
     sizes: [
-      { id: "small", label: "Small", diameter: '6 inches', serves: "5–7", price: 0 },
-      { id: "medium", label: "Medium", diameter: '9 inches', serves: "8–12", price: 0 },
-      { id: "large", label: "Large", diameter: '12 inches', serves: "13–18", price: 0 },
+      { id: "small", label: "Small", diameter: '6 inches', serves: "5–7", price: 50 },
+      { id: "medium", label: "Medium", diameter: '9 inches', serves: "8–12", price: 74 },
+      { id: "large", label: "Large", diameter: '12 inches', serves: "13–18", price: 116 },
     ],
     hasTopper: true,
+    topperPrice: 5,
     hasFinishOptions: false,
   },
 ];
@@ -256,9 +262,9 @@ export const siteContent = {
 // ── Legacy export for backward compatibility ──
 export const productConfig = {
   sizes: {
-    '6"': { basePrice: 0, description: "Perfect for intimate tables and smaller celebrations." },
-    '9"': { basePrice: 0, description: "A balanced centrepiece for most family occasions." },
-    '12"': { basePrice: 0, description: "Created for larger tables and bigger moments." },
+    '6"': { basePrice: 48, description: "Perfect for intimate tables and smaller celebrations." },
+    '9"': { basePrice: 72, description: "A balanced centrepiece for most family occasions." },
+    '12"': { basePrice: 112, description: "Created for larger tables and bigger moments." },
   },
   finishes: {
     "floral-finish": {

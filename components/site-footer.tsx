@@ -25,11 +25,11 @@ export function SiteFooter() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--deep-charcoal)]">
               Navigate
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               <li>
                 <Link
                   href="/"
-                  className="text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
+                  className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
                 >
                   Home
                 </Link>
@@ -37,7 +37,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/order/"
-                  className="text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
+                  className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
                 >
                   Order
                 </Link>
@@ -45,7 +45,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/story/"
-                  className="text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
+                  className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
                 >
                   Our Story
                 </Link>
@@ -58,11 +58,11 @@ export function SiteFooter() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--deep-charcoal)]">
               Get in Touch
             </p>
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               <li>
                 <a
                   href={`mailto:${siteContent.email}`}
-                  className="text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
+                  className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
                 >
                   {siteContent.email}
                 </a>
@@ -72,7 +72,7 @@ export function SiteFooter() {
                   href={siteContent.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
+                  className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
                 >
                   @cakish.ie
                 </a>
@@ -82,7 +82,7 @@ export function SiteFooter() {
                   href="https://wa.me/?text=Hi%2C%20I%27d%20like%20to%20order%20a%20Cakish%20pavlova"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
+                  className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"
                 >
                   WhatsApp
                 </a>

@@ -21,7 +21,14 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.96)] backdrop-blur-md">
+    <>
+      {/* Under Construction Banner */}
+      <div className="bg-[color:var(--deep-charcoal)] px-4 py-3 text-center">
+        <p className="text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--soft-gold)] md:text-sm">
+          🚧&nbsp; Under Construction — Coming Soon &nbsp;🚧
+        </p>
+      </div>
+      <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.96)] backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10 md:py-5">
         {/* Logo + wordmark */}
         <Link href="/" className="group inline-flex items-center gap-2.5">
@@ -39,24 +46,26 @@ export function SiteHeader() {
           </div>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="flex items-center gap-6 md:gap-8" aria-label="Main navigation">
+        {/* Nav — improved mobile touch targets */}
+        <nav className="flex items-center gap-4 md:gap-8" aria-label="Main navigation">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${
+                className={`inline-flex min-h-[44px] items-center text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${
                   active
                     ? "text-[color:var(--deep-charcoal)]"
                     : "text-[color:var(--muted-copy)] hover:text-[color:var(--deep-charcoal)]"
                 }`}
               >
-                {item.label}
-                {active && (
-                  <span className="mt-0.5 block h-px w-full bg-[color:var(--soft-gold)]" />
-                )}
+                <span>
+                  {item.label}
+                  {active && (
+                    <span className="mt-0.5 block h-px w-full bg-[color:var(--soft-gold)]" />
+                  )}
+                </span>
               </Link>
             );
           })}
@@ -70,5 +79,6 @@ export function SiteHeader() {
         </nav>
       </div>
     </header>
+    </>
   );
 }
