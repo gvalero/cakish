@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { products, siteContent } from "@/lib/site-data";
+import { assetPath } from "@/lib/asset-path";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
             <div className="mb-8 overflow-hidden rounded-sm md:hidden">
               <div className="relative aspect-[4/5] w-full">
                 <Image
-                  src="/images/products/strawberry-pavlova-hero.jpg"
+                  src={assetPath("/images/products/strawberry-pavlova-hero.jpg")}
                   alt="Cakish Strawberry Pavlova — handcrafted meringue topped with fresh strawberries arranged in a floral pattern, made in Wicklow, Ireland."
                   fill
                   className="object-cover"
@@ -74,7 +75,7 @@ export default function Home() {
               <div className="hidden overflow-hidden rounded-sm lg:block">
                 <div className="relative aspect-[4/5]">
                   <Image
-                    src="/images/products/strawberry-pavlova-hero.jpg"
+                    src={assetPath("/images/products/strawberry-pavlova-hero.jpg")}
                     alt="Cakish Strawberry Pavlova — handcrafted meringue topped with fresh strawberries arranged in a floral pattern, made in Wicklow, Ireland."
                     fill
                     className="object-cover"
@@ -115,7 +116,7 @@ export default function Home() {
                   <Link href={`/order/?product=${product.slug}`} className="block">
                     <div className="relative mb-4 aspect-square overflow-hidden rounded-sm bg-[color:var(--soft-cream)]">
                       <Image
-                        src={product.image}
+                        src={assetPath(product.image)}
                         alt={`${product.name} — ${product.description.slice(0, 80)}`}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -216,7 +217,7 @@ export default function Home() {
             <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
               <div className="relative aspect-[3/4] overflow-hidden rounded-sm md:aspect-auto md:min-h-[520px]">
                 <Image
-                  src="/images/products/pavlova-sizes-showcase.jpg"
+                  src={assetPath("/images/products/pavlova-sizes-showcase.jpg")}
                   alt="Three Cakish strawberry pavlovas in different sizes, viewed from above, showing the beautiful strawberry floral arrangement."
                   fill
                   className="object-cover"
@@ -225,7 +226,7 @@ export default function Home() {
               <div className="grid gap-4">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
                   <Image
-                    src="/images/products/strawberry-pavlova-detail.jpg"
+                    src={assetPath("/images/products/strawberry-pavlova-detail.jpg")}
                     alt="Close-up detail of a Cakish pavlova showing the intricate strawberry floral pattern and layers of cream and meringue."
                     fill
                     className="object-cover"
@@ -233,7 +234,7 @@ export default function Home() {
                 </div>
                 <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
                   <Image
-                    src="/images/products/pavlova-lifestyle.jpg"
+                    src={assetPath("/images/products/pavlova-lifestyle.jpg")}
                     alt="A Cakish pavlova being presented, showing the full layered construction with meringue, filling, cream, and strawberries."
                     fill
                     className="object-cover"
@@ -269,7 +270,7 @@ export default function Home() {
                 <article key={occasion.title}>
                   <div className="relative mb-4 aspect-square overflow-hidden rounded-sm">
                     <Image
-                      src={occasion.image}
+                      src={assetPath(occasion.image)}
                       alt={`Cakish pavlova for ${occasion.title.toLowerCase()} — ${occasion.description}`}
                       fill
                       className="object-cover"

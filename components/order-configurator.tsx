@@ -11,6 +11,7 @@ import {
   type FillingId,
   type FinishId,
 } from "@/lib/site-data";
+import { assetPath } from "@/lib/asset-path";
 
 export function OrderConfigurator() {
   // ── State ──
@@ -143,7 +144,7 @@ export function OrderConfigurator() {
                 >
                   <div className="relative aspect-square">
                     <Image
-                      src={p.image}
+                      src={assetPath(p.image)}
                       alt={p.name}
                       fill
                       className="object-cover"

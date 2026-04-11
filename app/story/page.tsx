@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { siteContent } from "@/lib/site-data";
+import { assetPath } from "@/lib/asset-path";
 
 export const metadata: Metadata = {
   title: "Our Story — Handcrafted Pavlova from Wicklow | Cakish",
@@ -54,7 +55,7 @@ export default function StoryPage() {
               <div className="overflow-hidden rounded-sm">
                 <div className="relative aspect-[4/5]">
                   <Image
-                    src="/images/products/strawberry-pavlova-gallery-1.jpg"
+                    src={assetPath("/images/products/strawberry-pavlova-gallery-1.jpg")}
                     alt="A Cakish strawberry pavlova — handcrafted meringue with fresh strawberries, made in Wicklow, Ireland."
                     fill
                     className="object-cover"
