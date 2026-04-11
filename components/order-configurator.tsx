@@ -17,11 +17,13 @@ export function OrderConfigurator() {
   // ── State ──
   const [selectedProductId, setSelectedProductId] = useState(products[0].id);
   const [selectedSizeId, setSelectedSizeId] = useState(products[0].sizes[0].id);
-  const [selectedFilling, setSelectedFilling] = useState<FillingId>("dulce-de-leche");
+  const [selectedFilling, setSelectedFilling] = useState<FillingId>("nutella");
   const [selectedFinish, setSelectedFinish] = useState<FinishId>("patisserie-sliced");
   const [topperMessage, setTopperMessage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [copied, setCopied] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [soonOpen, setSoonOpen] = useState(false);
 
   // Read ?product= from URL on mount
   useEffect(() => {
@@ -47,12 +49,18 @@ export function OrderConfigurator() {
     [product, selectedSizeId],
   );
 
-  // Whether the finish option should show:
-  // Only for Strawberry Pavlova AND only for sharing sizes (medium or large)
+  const selectedFillingOption = useMemo(
+    () => fillingOptions.find((f) => f.id === selectedFilling) ?? fillingOptions[0],
+    [selectedFilling],
+  );
+
+  const selectedFinishOption = useMemo(
+    () => finishOptions.find((f) => f.id === selectedFinish) ?? finishOptions[0],
+    [selectedFinish],
+  );
+
   const showFinishOptions = useMemo(() => {
-    if (!product.hasFinishOptions) return false;
-    // Show for all sizes of Strawberry Pavlova (small, medium, large)
-    return true;
+    return product.hasFinishOptions;
   }, [product]);
 
   // When product changes, reset size to first available
@@ -66,13 +74,16 @@ export function OrderConfigurator() {
 
   const priceDisplay = useMemo(() => {
     if (selectedSize.price > 0) {
-      const unit = selectedSize.price;
+      const base = selectedSize.price;
+      const fillingSurcharge = selectedFillingOption.surcharge;
+      const finishSurcharge = showFinishOptions ? selectedFinishOption.surcharge : 0;
       const topperCost = topperMessage.trim() ? product.topperPrice : 0;
-      const total = (unit + topperCost) * quantity;
-      return { unit, topperCost, total, hasPrice: true };
+      const unit = base + fillingSurcharge + finishSurcharge + topperCost;
+      const total = unit * quantity;
+      return { base, fillingSurcharge, finishSurcharge, topperCost, unit, total, hasPrice: true };
     }
-    return { unit: 0, topperCost: 0, total: 0, hasPrice: false };
-  }, [selectedSize, quantity, topperMessage, product.topperPrice]);
+    return { base: 0, fillingSurcharge: 0, finishSurcharge: 0, topperCost: 0, unit: 0, total: 0, hasPrice: false };
+  }, [selectedSize, quantity, topperMessage, product.topperPrice, selectedFillingOption, selectedFinishOption, showFinishOptions]);
 
   const inquirySummary = useMemo(() => {
     const lines = [
@@ -80,10 +91,10 @@ export function OrderConfigurator() {
       "",
       `Product: ${product.name}`,
       `Size: ${selectedSize.label} (${selectedSize.diameter}) — serves ${selectedSize.serves}`,
-      `Filling: ${fillingOptions.find((f) => f.id === selectedFilling)?.label}`,
+      `Filling: ${selectedFillingOption.label}${selectedFillingOption.surcharge > 0 ? ` (+EUR ${selectedFillingOption.surcharge})` : " (included)"}`,
     ];
     if (showFinishOptions) {
-      lines.push(`Finish: ${finishOptions.find((f) => f.id === selectedFinish)?.label}`);
+      lines.push(`Finish: ${selectedFinishOption.label}${selectedFinishOption.surcharge > 0 ? ` (+EUR ${selectedFinishOption.surcharge})` : " (included)"}`);
     }
     if (topperMessage.trim()) {
       lines.push(`Custom topper message: "${topperMessage.trim()}" (+EUR ${product.topperPrice})`);
@@ -95,7 +106,7 @@ export function OrderConfigurator() {
     lines.push("");
     lines.push("Please let me know your availability and collection details. Thank you!");
     return lines.join("\n");
-  }, [product, selectedSize, selectedFilling, selectedFinish, showFinishOptions, topperMessage, quantity, priceDisplay]);
+  }, [product, selectedSize, selectedFillingOption, selectedFinishOption, showFinishOptions, topperMessage, quantity, priceDisplay]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(inquirySummary);
@@ -119,6 +130,7 @@ export function OrderConfigurator() {
   const nextStep = () => stepCount++;
 
   return (
+    <>
     <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:items-start">
 
       {/* ── Left: Options ── */}
@@ -231,10 +243,11 @@ export function OrderConfigurator() {
                   <p className={`font-serif text-xl leading-tight ${active ? "text-[color:var(--ivory)]" : "text-[color:var(--deep-charcoal)]"}`}>
                     {filling.label}
                   </p>
-                  <p className={`mt-1 text-xs ${active ? "text-white/70" : "text-[color:var(--muted-copy)]"}`}>
-                    {filling.id === "dulce-de-leche"
-                      ? "A rich, sweet caramel — our most popular choice"
-                      : "Chocolate hazelnut spread — indulgent and crowd-pleasing"}
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
+                    {filling.surcharge > 0 ? `+EUR ${filling.surcharge}` : "Included"}
+                  </p>
+                  <p className={`mt-1.5 text-xs ${active ? "text-white/70" : "text-[color:var(--muted-copy)]"}`}>
+                    {filling.description}
                   </p>
                 </button>
               );
@@ -270,6 +283,9 @@ export function OrderConfigurator() {
                     >
                       <p className={`font-serif text-xl leading-tight ${active ? "text-[color:var(--ivory)]" : "text-[color:var(--deep-charcoal)]"}`}>
                         {finish.label}
+                      </p>
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
+                        {finish.surcharge > 0 ? `+EUR ${finish.surcharge}` : "Included"}
                       </p>
                       <p className={`mt-2 text-xs leading-5 ${active ? "text-white/70" : "text-[color:var(--muted-copy)]"}`}>
                         {finish.description}
@@ -358,13 +374,17 @@ export function OrderConfigurator() {
 
         <div className="mt-6 space-y-3 border-t border-[color:var(--line)] pt-5 text-sm text-[color:var(--body-copy)]">
           <div className="flex justify-between">
-            <span>Filling</span>
-            <span className="font-medium">{fillingOptions.find((f) => f.id === selectedFilling)?.label}</span>
+            <span>Size base</span>
+            <span>EUR {selectedSize.price}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>{selectedFillingOption.label}</span>
+            <span>{selectedFillingOption.surcharge > 0 ? `+EUR ${selectedFillingOption.surcharge}` : "Included"}</span>
           </div>
           {showFinishOptions && (
             <div className="flex justify-between">
-              <span>Finish</span>
-              <span className="font-medium">{finishOptions.find((f) => f.id === selectedFinish)?.label}</span>
+              <span>{selectedFinishOption.label}</span>
+              <span>{selectedFinishOption.surcharge > 0 ? `+EUR ${selectedFinishOption.surcharge}` : "Included"}</span>
             </div>
           )}
           {topperMessage.trim() && (
@@ -385,43 +405,47 @@ export function OrderConfigurator() {
           </div>
         </div>
 
-        {/* ── Contact options ── */}
+        {/* ── Primary CTA: Proceed to Checkout ── */}
         <div className="mt-6 space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--deep-charcoal)]">
-            Send your order via:
-          </p>
-
-          {/* WhatsApp — primary */}
           <button
             type="button"
-            onClick={handleWhatsApp}
-            className="flex w-full items-center justify-center gap-2.5 rounded-sm bg-[#25D366] px-4 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:opacity-90"
-            aria-label="Send order via WhatsApp"
-          >
-            <WhatsAppIcon />
-            Order via WhatsApp
-          </button>
-
-          {/* Email */}
-          <button
-            type="button"
-            onClick={handleEmail}
             className="cakish-button w-full"
-            aria-label="Send order via email"
+            onClick={() => setDrawerOpen(true)}
           >
-            Order via Email
+            Proceed to Checkout
           </button>
 
-          {/* Copy */}
-          <button
-            type="button"
-            className="w-full rounded-sm border border-[color:var(--line)] bg-white px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)] transition hover:border-[color:var(--deep-charcoal)] hover:text-[color:var(--deep-charcoal)]"
-            onClick={handleCopy}
-            aria-label="Copy order summary to clipboard"
-          >
-            {copied ? "✓ Copied to clipboard!" : "Copy Order Summary"}
-          </button>
-
+          {/* Secondary: WhatsApp / Email / Copy */}
+          <p className="pt-2 text-center text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[color:var(--muted-copy)]">
+            Or enquire directly
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleWhatsApp}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-sm border border-[color:var(--line)] bg-white px-3 py-2.5 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[color:var(--muted-copy)] transition hover:border-[#25D366] hover:text-[#25D366]"
+              aria-label="Send order via WhatsApp"
+            >
+              <WhatsAppIcon />
+              WhatsApp
+            </button>
+            <button
+              type="button"
+              onClick={handleEmail}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-sm border border-[color:var(--line)] bg-white px-3 py-2.5 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[color:var(--muted-copy)] transition hover:border-[color:var(--deep-charcoal)] hover:text-[color:var(--deep-charcoal)]"
+              aria-label="Send order via email"
+            >
+              Email
+            </button>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-sm border border-[color:var(--line)] bg-white px-3 py-2.5 text-[0.65rem] font-semibold uppercase tracking-[0.1em] text-[color:var(--muted-copy)] transition hover:border-[color:var(--deep-charcoal)] hover:text-[color:var(--deep-charcoal)]"
+              aria-label="Copy order summary to clipboard"
+            >
+              {copied ? "Copied ✓" : "Copy"}
+            </button>
+          </div>
           {copied && (
             <p className="rounded-sm bg-[color:var(--soft-cream)] px-3 py-2 text-xs leading-5 text-[color:var(--muted-copy)]">
               Paste this into any message app, email, or social DM to send your order.
@@ -440,6 +464,128 @@ export function OrderConfigurator() {
         </div>
       </aside>
     </div>
+
+    {/* ── Checkout overlay / drawer ── */}
+    {drawerOpen && (
+      <div
+        role="dialog"
+        aria-modal="true"
+        className="fixed inset-0 z-50 flex items-end justify-end"
+      >
+        <div
+          className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+          onClick={() => setDrawerOpen(false)}
+        />
+        <aside
+          className="relative z-[60] flex w-full max-w-lg flex-col overflow-y-auto border-l border-[color:var(--line)] bg-[color:var(--ivory)] p-6 shadow-[-20px_0_50px_rgba(0,0,0,0.12)] md:p-10"
+          style={{ height: "100dvh" }}
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                Checkout Preview
+              </p>
+              <h2 className="mt-2 font-serif text-3xl text-[color:var(--deep-charcoal)]">
+                Your order
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setDrawerOpen(false); setSoonOpen(false); }}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-[color:var(--line)] bg-white text-xl"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+          </div>
+
+          <div className="mt-8 space-y-4">
+            <div className="border border-[color:var(--line)] bg-white p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-serif text-xl text-[color:var(--deep-charcoal)]">
+                    {product.name}
+                  </p>
+                  <p className="mt-1 text-xs text-[color:var(--muted-copy)]">
+                    {selectedSize.label} &middot; {selectedFillingOption.label}
+                    {showFinishOptions && ` · ${selectedFinishOption.label}`}
+                    {topperMessage.trim() && ` · Topper`}
+                  </p>
+                  <p className="mt-0.5 text-xs uppercase tracking-[0.16em] text-[color:var(--muted-copy)]">
+                    Qty {quantity}
+                  </p>
+                </div>
+                <p className="font-serif text-xl text-[color:var(--deep-charcoal)]">
+                  EUR {priceDisplay.total.toFixed(2)}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-4 border border-[color:var(--line)] bg-white p-4">
+              {["Full name", "Email address", "Preferred collection date"].map((field) => (
+                <label key={field} className="block space-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
+                  {field}
+                  <input
+                    aria-label={field}
+                    readOnly
+                    placeholder={field}
+                    className="mt-1 block w-full border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--body-copy)] outline-none"
+                  />
+                </label>
+              ))}
+            </div>
+
+            <div className="border border-[color:var(--line)] bg-white p-4 text-xs leading-5 text-[color:var(--muted-copy)]">
+              <p className="font-semibold uppercase tracking-[0.18em] text-[color:var(--soft-gold)]">
+                Fulfilment
+              </p>
+              <p className="mt-1">{siteContent.collectionModel}</p>
+            </div>
+          </div>
+
+          <div className="mt-auto space-y-3 pt-8">
+            <button
+              type="button"
+              className="cakish-button w-full"
+              onClick={() => setSoonOpen(true)}
+            >
+              Pay Securely Online
+            </button>
+            <p className="text-xs leading-5 text-[color:var(--muted-copy)]">
+              Direct payment will be connected in a future release.
+            </p>
+          </div>
+
+          {soonOpen && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              className="absolute inset-4 grid place-items-center border border-[color:var(--line)] bg-[color:var(--ivory)] p-6 text-center shadow-lg"
+            >
+              <div className="max-w-xs space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+                  Coming Soon
+                </p>
+                <h3 className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
+                  Payments coming soon.
+                </h3>
+                <p className="text-sm leading-6 text-[color:var(--body-copy)]">
+                  For now, use the enquiry option to reserve your date and confirm your order.
+                </p>
+                <button
+                  type="button"
+                  className="cakish-button-secondary"
+                  onClick={() => setSoonOpen(false)}
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          )}
+        </aside>
+      </div>
+    )}
+    </>
   );
 }
 

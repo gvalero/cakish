@@ -6,8 +6,8 @@
 
 // ── Filling options (shared across all products) ──
 export const fillingOptions = [
-  { id: "dulce-de-leche", label: "Dulce de Leche" },
-  { id: "nutella", label: "Nutella" },
+  { id: "dulce-de-leche", label: "Dulce de Leche", surcharge: 3, description: "A rich, sweet caramel — our most popular choice" },
+  { id: "nutella", label: "Nutella", surcharge: 0, description: "Chocolate hazelnut spread — indulgent and crowd-pleasing" },
 ] as const;
 
 export type FillingId = (typeof fillingOptions)[number]["id"];
@@ -130,12 +130,14 @@ export const finishOptions = [
   {
     id: "floral",
     label: "Floral Finish",
+    surcharge: 18,
     description:
       "Whole strawberries thinly sliced and arranged in a sculpted floral pattern. A signature presentation that turns the pavlova into a centrepiece.",
   },
   {
     id: "patisserie-sliced",
     label: "Patisserie Sliced Finish",
+    surcharge: 0,
     description:
       "Precisely sliced strawberries layered in a clean, contemporary arrangement. A polished patisserie look that is effortless to serve.",
   },

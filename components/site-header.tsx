@@ -28,33 +28,33 @@ export function SiteHeader() {
           🚧&nbsp; Under Construction — Coming Soon &nbsp;🚧
         </p>
       </div>
-      <header className="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.96)] backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 md:px-10 md:py-5">
+      <header className="sticky top-0 z-40 overflow-x-hidden border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.96)] backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 md:px-10 md:py-5">
         {/* Logo + wordmark */}
-        <Link href="/" className="group inline-flex items-center gap-2.5">
+        <Link href="/" className="group inline-flex flex-shrink-0 items-center gap-2">
           <BrandLogo
             priority
-            className="h-10 w-10 object-contain md:h-12 md:w-12"
+            className="h-8 w-8 object-contain sm:h-10 sm:w-10 md:h-12 md:w-12"
           />
           <div>
-            <p className="font-serif text-xl leading-none tracking-[-0.02em] text-[color:var(--deep-charcoal)] md:text-2xl">
+            <p className="font-serif text-lg leading-none tracking-[-0.02em] text-[color:var(--deep-charcoal)] sm:text-xl md:text-2xl">
               Cakish
             </p>
-            <p className="mt-0.5 text-[0.55rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+            <p className="mt-0.5 hidden text-[0.55rem] font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)] sm:block">
               Handcrafted Pavlova
             </p>
           </div>
         </Link>
 
-        {/* Nav — improved mobile touch targets */}
-        <nav className="flex items-center gap-4 md:gap-8" aria-label="Main navigation">
+        {/* Nav — compact on mobile */}
+        <nav className="flex items-center gap-2 sm:gap-4 md:gap-8" aria-label="Main navigation">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`inline-flex min-h-[44px] items-center text-xs font-semibold uppercase tracking-[0.18em] transition-colors ${
+                className={`inline-flex min-h-[44px] items-center text-[0.65rem] font-semibold uppercase tracking-[0.1em] transition-colors sm:text-xs sm:tracking-[0.18em] ${
                   active
                     ? "text-[color:var(--deep-charcoal)]"
                     : "text-[color:var(--muted-copy)] hover:text-[color:var(--deep-charcoal)]"
