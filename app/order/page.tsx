@@ -1,72 +1,92 @@
-import { SiteFooter } from "@/components/site-footer";
+import type { Metadata } from "next";
+import Link from "next/link";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { OrderConfigurator } from "@/components/order-configurator";
 import { siteContent } from "@/lib/site-data";
 
-export const metadata = {
-  title: "Order Your Pavlova",
-  description: "Order a premium handcrafted pavlova from Cakish. Choose 6″, 8″, or 12″ with strawberry floral or patisserie sliced finish. Collection from Wicklow, Ireland.",
-  alternates: { canonical: "/order" },
+export const metadata: Metadata = {
+  title: "Order Pavlova Online — Strawberry, Raspberry, Mixed Berries & Heart | Cakish",
+  description:
+    "Order handcrafted pavlova from Cakish in Wicklow, Ireland. Choose from Strawberry, Heart, Mixed Berries, or Raspberry Pavlova. Dulce de Leche or Nutella filling. Custom topper messages available. Collection from Wicklow.",
+  alternates: {
+    canonical: "/order/",
+  },
+  openGraph: {
+    title: "Order Pavlova Online | Cakish — Wicklow, Ireland",
+    description:
+      "Choose from four handcrafted pavlova varieties. Made fresh to order with Dulce de Leche or Nutella filling. Collection from Wicklow.",
+    url: "/order/",
+  },
 };
 
 export default function OrderPage() {
   return (
     <>
       <SiteHeader />
-      <main className="flex-1 px-6 pb-20 pt-12 md:px-10 md:pb-28 md:pt-16">
-        <div className="mx-auto max-w-5xl space-y-12">
-
-          {/* Page heading */}
-          <section className="max-w-xl space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--soft-gold)]">
-              Order
-            </p>
-            <h1 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
-              Reserve your centrepiece.
-            </h1>
-            <p className="text-base leading-7 text-[color:var(--body-copy)]">
-              Select your size and finish below, then proceed to checkout or send an enquiry.
-            </p>
-          </section>
-
-          <hr className="cakish-rule" />
-
-          {/* Configurator */}
-          <OrderConfigurator />
-
-          <hr className="cakish-rule" />
-
-          {/* Collection details */}
-          <section className="space-y-6">
-            <div className="max-w-xl space-y-2">
+      <main className="flex-1">
+        {/* ── Heading ── */}
+        <section className="px-6 pb-6 pt-12 md:px-10 md:pt-20" aria-label="Order introduction">
+          <div className="mx-auto max-w-6xl">
+            <nav aria-label="Breadcrumb" className="mb-6">
+              <ol className="flex items-center gap-2 text-xs text-[color:var(--muted-copy)]">
+                <li><Link href="/" className="hover:text-[color:var(--deep-charcoal)]">Home</Link></li>
+                <li aria-hidden="true">/</li>
+                <li aria-current="page" className="text-[color:var(--deep-charcoal)]">Order</li>
+              </ol>
+            </nav>
+            <div className="max-w-xl space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[color:var(--soft-gold)]">
-                Collection Details
+                Build Your Order
               </p>
-              <h2 className="font-serif text-2xl text-[color:var(--deep-charcoal)]">
-                How collection works.
-              </h2>
-              <p className="text-sm leading-6 text-[color:var(--body-copy)]">
-                {siteContent.collectionModel}
+              <h1 className="font-serif text-4xl leading-tight text-[color:var(--deep-charcoal)] md:text-5xl">
+                Order your pavlova.
+              </h1>
+              <p className="text-base leading-7 text-[color:var(--body-copy)]">
+                Choose your pavlova variety, size, filling, and optional custom topper. Then send us your enquiry — we will confirm availability and arrange collection from Wicklow.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
+          </div>
+        </section>
+
+        {/* ── Configurator ── */}
+        <section className="px-6 pb-16 pt-8 md:px-10 md:pb-24" aria-label="Order configurator">
+          <div className="mx-auto max-w-6xl">
+            <OrderConfigurator />
+          </div>
+        </section>
+
+        <hr className="cakish-rule" />
+
+        {/* ── Collection Details ── */}
+        <section
+          className="px-6 py-16 md:px-10 md:py-24"
+          aria-labelledby="collection-heading"
+        >
+          <div className="mx-auto max-w-6xl">
+            <h2
+              id="collection-heading"
+              className="mb-10 font-serif text-3xl leading-tight text-[color:var(--deep-charcoal)] md:text-4xl"
+            >
+              Collection details
+            </h2>
+            <div className="grid gap-6 md:grid-cols-3">
               {siteContent.collectionHighlights.map((item) => (
                 <article
                   key={item.title}
-                  className="border border-[color:var(--line)] bg-white p-5"
+                  className="border border-[color:var(--line)] bg-white p-6"
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--soft-gold)]">
+                  <h3 className="font-serif text-lg text-[color:var(--deep-charcoal)]">
                     {item.title}
-                  </p>
+                  </h3>
                   <p className="mt-2 text-sm leading-6 text-[color:var(--muted-copy)]">
                     {item.copy}
                   </p>
                 </article>
               ))}
             </div>
-          </section>
-
-        </div>
+          </div>
+        </section>
       </main>
       <SiteFooter />
     </>
