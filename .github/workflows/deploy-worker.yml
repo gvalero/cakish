@@ -1,0 +1,31 @@
+name: Deploy Stripe Worker
+
+on:
+  push:
+    branches: [dev, main]
+    paths:
+      - "worker/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+          workingDirectory: worker
+          secrets: |
+            STRIPE_SECRET_KEY
+            NOTIFY_EMAIL
+            WHATSAPP_PHONE
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          NOTIFY_EMAIL: ${{ secrets.WORKER_NOTIFY_EMAIL }}
+          WHATSAPP_PHONE: ${{ secrets.WORKER_WHATSAPP_PHONE }}
