@@ -181,6 +181,8 @@ async function handleCreateCheckout(request, env, origin) {
   const params = new URLSearchParams();
   params.append("mode", "payment");
   params.append("customer_email", body.customerEmail);
+  // Stripe sends a payment receipt to this email automatically
+  params.append("payment_intent_data[receipt_email]", body.customerEmail);
   params.append("line_items[0][price_data][currency]", "eur");
   params.append("line_items[0][price_data][unit_amount]", String(calc.unitPriceCents));
   params.append("line_items[0][price_data][product_data][name]", `Cakish ${calc.product.name}`);
@@ -355,26 +357,37 @@ async function handleSessionStatus(request, env, origin) {
   return jsonResponse(result, 200, origin);
 }
 
-// ── Email via MailChannels (free on Cloudflare Workers) ──
+// ── Email via Resend (100 emails/day free tier) ──
+// Set RESEND_API_KEY via: npx wrangler secret put RESEND_API_KEY
+// Until domain is verified on Resend, use from: "Cakish <onboarding@resend.dev>"
 
-async function sendEmail(env, { to, subject, text }) {
-  const res = await fetch("https://api.mailchannels.net/tx/v1/send", {
+async function sendEmail(env, { to, subject, text, html }) {
+  const apiKey = env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("RESEND_API_KEY not set — skipping email to", to);
+    return;
+  }
+
+  const fromEmail = env.RESEND_FROM || "Cakish <onboarding@resend.dev>";
+
+  const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
-      personalizations: [{ to: [{ email: to }] }],
-      from: {
-        email: env.NOTIFY_EMAIL || "hello@cakish.ie",
-        name: "Cakish",
-      },
+      from: fromEmail,
+      to: [to],
       subject,
-      content: [{ type: "text/plain", value: text }],
+      text,
+      ...(html ? { html } : {}),
     }),
   });
 
   if (!res.ok) {
     const body = await res.text();
-    console.error(`MailChannels error (${res.status}):`, body);
+    console.error(`Resend error (${res.status}):`, body);
   }
 }
 
