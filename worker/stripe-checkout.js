@@ -1,5 +1,6 @@
 /**
  * Cloudflare Worker — Cakish Stripe Checkout & Order Notifications
+ * v2.0 — Full product catalog, customer info, notifications
  *
  * Endpoints:
  *   POST /              — Create Stripe Checkout Session
