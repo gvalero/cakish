@@ -160,6 +160,15 @@ async function handleCreateCheckout(request, env, origin) {
   if (!body.customerName || !body.customerEmail || !body.collectionDate) {
     return jsonResponse({ error: "Name, email, and collection date are required" }, 400, origin);
   }
+  // Input length limits (prevent metadata overflow and abuse)
+  if (body.customerName.length > 100) return jsonResponse({ error: "Name too long (max 100 chars)" }, 400, origin);
+  if (body.customerEmail.length > 200) return jsonResponse({ error: "Email too long" }, 400, origin);
+  if (body.topperMessage && body.topperMessage.length > 100) return jsonResponse({ error: "Topper message too long (max 100 chars)" }, 400, origin);
+  if (body.customerNote && body.customerNote.length > 500) return jsonResponse({ error: "Note too long (max 500 chars)" }, 400, origin);
+  // Basic email format check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.customerEmail)) {
+    return jsonResponse({ error: "Invalid email format" }, 400, origin);
+  }
 
   const calc = calculateOrder(body);
   if (calc.error) return jsonResponse({ error: calc.error }, 400, origin);
@@ -254,9 +263,10 @@ async function handleSessionStatus(request, env, origin) {
     total: euro(session.amount_total || 0),
   };
 
-  // Send notifications only if paid and not already notified
+  // Send notifications only if paid and not already notified.
+  // Mark-then-send: reduces duplicates on concurrent requests (best-effort without a DB lock).
   if (session.payment_status === "paid" && !meta.notified) {
-    // Mark as notified to prevent duplicates
+    // Mark as notified FIRST to minimise race window
     try {
       const markParams = new URLSearchParams();
       markParams.append("metadata[notified]", "true");
