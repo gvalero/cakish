@@ -22,12 +22,14 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Under Construction Banner */}
+      {/* Under Construction Banner — remove by setting NEXT_PUBLIC_SHOW_BANNER=false */}
+      {process.env.NEXT_PUBLIC_SHOW_BANNER !== "false" && (
       <div className="bg-[color:var(--deep-charcoal)] px-4 py-3 text-center">
         <p className="text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--soft-gold)] md:text-sm">
           🚧&nbsp; Under Construction — Coming Soon &nbsp;🚧
         </p>
       </div>
+      )}
       <header className="sticky top-0 z-40 overflow-x-hidden border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.96)] backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 md:px-10 md:py-5">
         {/* Logo + wordmark */}

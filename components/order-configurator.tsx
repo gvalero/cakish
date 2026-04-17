@@ -136,7 +136,7 @@ export function OrderConfigurator() {
 
   const handleWhatsApp = () => {
     const text = encodeURIComponent(inquirySummary);
-    window.open(`https://wa.me/?text=${text}`);
+    window.open(`https://wa.me/353834462295?text=${text}`);
   };
 
   // Close drawer on Escape key

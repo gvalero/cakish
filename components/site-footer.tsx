@@ -79,7 +79,7 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/?text=Hi%2C%20I%27d%20like%20to%20order%20a%20Cakish%20pavlova"
+                  href="https://wa.me/353834462295?text=Hi%2C%20I%27d%20like%20to%20order%20a%20Cakish%20pavlova"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex min-h-[44px] items-center text-sm text-[color:var(--muted-copy)] transition hover:text-[color:var(--deep-charcoal)]"

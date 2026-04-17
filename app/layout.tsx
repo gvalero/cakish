@@ -110,10 +110,10 @@ const bakerySchema = {
             image: "https://cakish.pages.dev/images/products/strawberry-pavlova-product.jpg",
             offers: {
               "@type": "AggregateOffer",
-              lowPrice: "0",
-              highPrice: "0",
+              lowPrice: "48",
+              highPrice: "112",
               priceCurrency: "EUR",
-              availability: "https://schema.org/PreOrder",
+              availability: "https://schema.org/InStock",
               offerCount: 3,
             },
           },
@@ -123,6 +123,12 @@ const bakerySchema = {
             description:
               "Heart-shaped pavlova. Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh strawberries. 9 inches, serves 8–10.",
             image: "https://cakish.pages.dev/images/products/generated-heart-pavlova.jpg",
+            offers: {
+              "@type": "Offer",
+              price: "78",
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+            },
           },
           {
             "@type": "MenuItem",
@@ -130,6 +136,14 @@ const bakerySchema = {
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, mixed fresh berries (strawberries, blueberries, raspberries, blackberries). Available in Small (6 inches, serves 5–7), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
             image: "https://cakish.pages.dev/images/products/generated-mixed-berries-medium.jpg",
+            offers: {
+              "@type": "AggregateOffer",
+              lowPrice: "52",
+              highPrice: "118",
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              offerCount: 3,
+            },
           },
           {
             "@type": "MenuItem",
@@ -137,6 +151,14 @@ const bakerySchema = {
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh whole raspberries. Available in Small (6 inches, serves 5–7), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
             image: "https://cakish.pages.dev/images/products/generated-raspberry-medium.jpg",
+            offers: {
+              "@type": "AggregateOffer",
+              lowPrice: "50",
+              highPrice: "116",
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              offerCount: 3,
+            },
           },
         ],
       },
@@ -229,7 +251,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-IE">
       <head>
         <script
           type="application/ld+json"
