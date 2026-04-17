@@ -23,7 +23,14 @@ export function OrderConfigurator() {
   const [quantity, setQuantity] = useState(1);
   const [copied, setCopied] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [soonOpen, setSoonOpen] = useState(false);
+
+  // ── Customer info state ──
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [collectionDate, setCollectionDate] = useState("");
+  const [customerNote, setCustomerNote] = useState("");
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   // Read ?product= from URL on mount
   useEffect(() => {
@@ -143,11 +150,47 @@ export function OrderConfigurator() {
   useEffect(() => {
     if (!drawerOpen) return;
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { setDrawerOpen(false); setSoonOpen(false); }
+      if (e.key === "Escape") { setDrawerOpen(false); }
     };
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
   }, [drawerOpen]);
+
+  // ── Checkout handler ──
+  const isCheckoutReady = customerName.trim().length > 0
+    && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)
+    && collectionDate.length > 0;
+
+  const handleCheckout = async () => {
+    if (!isCheckoutReady) return;
+    setCheckoutLoading(true);
+    setCheckoutError(null);
+    try {
+      const workerUrl = process.env.NEXT_PUBLIC_STRIPE_WORKER_URL || "https://cakish-stripe-checkout.valerogian.workers.dev";
+      const res = await fetch(workerUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: selectedProductId,
+          sizeId: selectedSizeId,
+          fillingId: selectedFilling,
+          finishId: showFinishOptions ? selectedFinish : undefined,
+          topperMessage: topperMessage.trim() || undefined,
+          quantity,
+          customerName: customerName.trim(),
+          customerEmail: customerEmail.trim(),
+          collectionDate,
+          customerNote: customerNote.trim() || undefined,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Checkout failed");
+      window.location.href = data.url;
+    } catch (err: unknown) {
+      setCheckoutError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      setCheckoutLoading(false);
+    }
+  };
 
   // Step counter
   let stepCount = 1;
@@ -515,7 +558,7 @@ export function OrderConfigurator() {
             </div>
             <button
               type="button"
-              onClick={() => { setDrawerOpen(false); setSoonOpen(false); }}
+              onClick={() => { setDrawerOpen(false); setCheckoutError(null); }}
               className="inline-flex h-10 w-10 items-center justify-center rounded-sm border border-[color:var(--line)] bg-white text-xl"
               aria-label="Close"
             >
@@ -546,17 +589,53 @@ export function OrderConfigurator() {
             </div>
 
             <div className="space-y-4 border border-[color:var(--line)] bg-white p-4">
-              {["Full name", "Email address", "Preferred collection date"].map((field) => (
-                <label key={field} className="block space-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
-                  {field}
-                  <input
-                    aria-label={field}
-                    readOnly
-                    placeholder={field}
-                    className="mt-1 block w-full border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--body-copy)] outline-none"
-                  />
-                </label>
-              ))}
+              <label className="block space-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
+                Full name *
+                <input
+                  type="text"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                  placeholder="Your full name"
+                  required
+                  className="mt-1 block w-full border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--body-copy)] outline-none transition focus:border-[color:var(--deep-charcoal)]"
+                />
+              </label>
+              <label className="block space-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
+                Email address *
+                <input
+                  type="email"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  className="mt-1 block w-full border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--body-copy)] outline-none transition focus:border-[color:var(--deep-charcoal)]"
+                />
+              </label>
+              <label className="block space-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
+                Preferred collection date *
+                <input
+                  type="date"
+                  value={collectionDate}
+                  onChange={(e) => setCollectionDate(e.target.value)}
+                  min={new Date(Date.now() + 2 * 86400000).toISOString().split("T")[0]}
+                  required
+                  className="mt-1 block w-full border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--body-copy)] outline-none transition focus:border-[color:var(--deep-charcoal)]"
+                />
+                <span className="mt-1 block text-[0.6rem] font-normal normal-case tracking-normal text-[color:var(--muted-copy)]">
+                  Please allow at least 48 hours for preparation
+                </span>
+              </label>
+              <label className="block space-y-1 text-xs font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-copy)]">
+                Note (optional)
+                <textarea
+                  value={customerNote}
+                  onChange={(e) => setCustomerNote(e.target.value)}
+                  placeholder="Any special requests or dietary notes..."
+                  rows={2}
+                  maxLength={300}
+                  className="mt-1 block w-full resize-none border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--body-copy)] outline-none transition focus:border-[color:var(--deep-charcoal)]"
+                />
+              </label>
             </div>
 
             <div className="border border-[color:var(--line)] bg-white p-4 text-xs leading-5 text-[color:var(--muted-copy)]">
@@ -570,42 +649,26 @@ export function OrderConfigurator() {
           <div className="mt-auto space-y-3 pt-8">
             <button
               type="button"
-              className="cakish-button w-full"
-              onClick={() => setSoonOpen(true)}
+              className="cakish-button w-full disabled:cursor-not-allowed disabled:opacity-50"
+              onClick={handleCheckout}
+              disabled={!isCheckoutReady || checkoutLoading}
             >
-              Pay Securely Online
+              {checkoutLoading ? "Redirecting to Stripe…" : `Pay €${priceDisplay.total.toFixed(2)} Securely`}
             </button>
-            <p className="text-xs leading-5 text-[color:var(--muted-copy)]">
-              Direct payment will be connected in a future release.
+            {!isCheckoutReady && (
+              <p className="text-center text-xs text-[color:var(--muted-copy)]">
+                Fill in your name, email, and collection date to continue
+              </p>
+            )}
+            {checkoutError && (
+              <p className="rounded-sm bg-red-50 px-3 py-2 text-xs text-red-600">
+                {checkoutError}
+              </p>
+            )}
+            <p className="text-center text-xs leading-5 text-[color:var(--muted-copy)]">
+              Secure payment via Stripe. You&apos;ll receive a confirmation email after payment.
             </p>
           </div>
-
-          {soonOpen && (
-            <div
-              role="dialog"
-              aria-modal="true"
-              className="absolute inset-4 grid place-items-center border border-[color:var(--line)] bg-[color:var(--ivory)] p-6 text-center shadow-lg"
-            >
-              <div className="max-w-xs space-y-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
-                  Coming Soon
-                </p>
-                <h3 className="font-serif text-3xl text-[color:var(--deep-charcoal)]">
-                  Payments coming soon.
-                </h3>
-                <p className="text-sm leading-6 text-[color:var(--body-copy)]">
-                  For now, use the enquiry option to reserve your date and confirm your order.
-                </p>
-                <button
-                  type="button"
-                  className="cakish-button-secondary"
-                  onClick={() => setSoonOpen(false)}
-                >
-                  Got it
-                </button>
-              </div>
-            </div>
-          )}
         </aside>
       </div>
     )}
