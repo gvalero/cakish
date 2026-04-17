@@ -21,11 +21,6 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
           workingDirectory: worker
-          secrets: |
-            STRIPE_SECRET_KEY
-            NOTIFY_EMAIL
-            WHATSAPP_PHONE
-        env:
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          NOTIFY_EMAIL: ${{ secrets.WORKER_NOTIFY_EMAIL }}
-          WHATSAPP_PHONE: ${{ secrets.WORKER_WHATSAPP_PHONE }}
+        # Worker secrets (STRIPE_SECRET_KEY, NOTIFY_EMAIL, WHATSAPP_PHONE)
+        # are managed via the Cloudflare dashboard or `wrangler secret put`.
+        # They persist across deploys and don't need to be re-pushed here.
