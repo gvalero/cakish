@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     "pavlova delivery Wicklow",
     "celebration cake Ireland",
   ],
-  metadataBase: new URL("https://cakish.pages.dev"),
+  metadataBase: new URL("https://cakish.ie"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_IE",
-    url: "https://cakish.pages.dev",
+    url: "https://cakish.ie",
     siteName: "Cakish",
     title: "Cakish — Handcrafted Pavlova | Wicklow, Ireland",
     description:
@@ -74,10 +74,10 @@ export const metadata: Metadata = {
 const bakerySchema = {
   "@context": "https://schema.org",
   "@type": "Bakery",
-  "@id": "https://cakish.pages.dev/#bakery",
+  "@id": "https://cakish.ie/#bakery",
   name: "Cakish",
-  url: "https://cakish.pages.dev",
-  image: "https://cakish.pages.dev/images/products/strawberry-pavlova-hero.jpg",
+  url: "https://cakish.ie",
+  image: "https://cakish.ie/images/products/strawberry-pavlova-hero.jpg",
   description:
     "Handcrafted pavlova desserts made fresh to order in Wicklow, Ireland. Four varieties: Strawberry, Heart, Mixed Berries, and Raspberry. Dulce de Leche or Nutella filling. Collection from Wicklow.",
   email: "hello@cakish.ie",
@@ -107,7 +107,7 @@ const bakerySchema = {
             name: "Strawberry Pavlova",
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh Irish strawberries. Available in Small (6 inches, serves 5–6), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
-            image: "https://cakish.pages.dev/images/products/strawberry-pavlova-product.jpg",
+            image: "https://cakish.ie/images/products/strawberry-pavlova-product.jpg",
             offers: {
               "@type": "AggregateOffer",
               lowPrice: "48",
@@ -122,7 +122,7 @@ const bakerySchema = {
             name: "Heart Pavlova",
             description:
               "Heart-shaped pavlova. Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh strawberries. 9 inches, serves 8–10.",
-            image: "https://cakish.pages.dev/images/products/generated-heart-pavlova.jpg",
+            image: "https://cakish.ie/images/products/generated-heart-pavlova.jpg",
             offers: {
               "@type": "Offer",
               price: "78",
@@ -135,7 +135,7 @@ const bakerySchema = {
             name: "Mixed Berries Pavlova",
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, mixed fresh berries (strawberries, blueberries, raspberries, blackberries). Available in Small (6 inches, serves 5–7), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
-            image: "https://cakish.pages.dev/images/products/generated-mixed-berries-medium.jpg",
+            image: "https://cakish.ie/images/products/generated-mixed-berries-medium.jpg",
             offers: {
               "@type": "AggregateOffer",
               lowPrice: "52",
@@ -150,7 +150,7 @@ const bakerySchema = {
             name: "Raspberry Pavlova",
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh whole raspberries. Available in Small (6 inches, serves 5–7), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
-            image: "https://cakish.pages.dev/images/products/generated-raspberry-medium.jpg",
+            image: "https://cakish.ie/images/products/generated-raspberry-medium.jpg",
             offers: {
               "@type": "AggregateOffer",
               lowPrice: "50",

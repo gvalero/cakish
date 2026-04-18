@@ -16,8 +16,12 @@ import { assetPath } from "@/lib/asset-path";
 export function OrderConfigurator() {
   // ── State ──
   const [selectedProductId, setSelectedProductId] = useState(products[0].id);
-  const [selectedSizeId, setSelectedSizeId] = useState(products[0].sizes[0].id);
-  const [selectedFilling, setSelectedFilling] = useState<FillingId>("nutella");
+  // Default to Medium (9") size — typical order for small family gatherings
+  const [selectedSizeId, setSelectedSizeId] = useState(
+    products[0].sizes[1]?.id ?? products[0].sizes[0].id,
+  );
+  // Default to Dulce de Leche — signature Cakish filling
+  const [selectedFilling, setSelectedFilling] = useState<FillingId>("dulce-de-leche");
   const [selectedFinish, setSelectedFinish] = useState<FinishId>("patisserie-sliced");
   const [topperMessage, setTopperMessage] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -41,7 +45,7 @@ export function OrderConfigurator() {
       const found = products.find((p) => p.slug === slug);
       if (found) {
         setSelectedProductId(found.id);
-        setSelectedSizeId(found.sizes[0].id);
+        setSelectedSizeId(found.sizes[1]?.id ?? found.sizes[0].id);
       }
     }
   }, []);

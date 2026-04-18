@@ -1,22 +1,32 @@
 import Link from "next/link";
 import { siteContent } from "@/lib/site-data";
+import { InstagramGrid } from "@/components/instagram-grid";
 
 export function SiteFooter() {
   return (
     <footer
-      className="border-t border-[color:var(--line)] bg-[color:var(--soft-cream)] px-6 py-12 md:px-10"
+      className="border-t border-[color:var(--line)] bg-[color:var(--soft-cream)] pt-16 pb-10"
       aria-label="Site footer"
     >
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-10 md:grid-cols-[1fr_auto_auto]">
+      {/* Mini Instagram strip */}
+      <div className="mb-14">
+        <InstagramGrid compact />
+      </div>
+
+      <div className="mx-auto max-w-6xl px-6 md:px-10">
+        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           {/* Brand column */}
-          <div className="space-y-3">
-            <p className="font-serif text-xl text-[color:var(--deep-charcoal)]">Cakish</p>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
+          <div className="space-y-4">
+            <p className="font-serif text-2xl text-[color:var(--deep-charcoal)]">Cakish</p>
+            <p className="cakish-eyebrow">
               Handcrafted Pavlova · Wicklow, Ireland
             </p>
-            <p className="max-w-xs text-sm leading-6 text-[color:var(--muted-copy)]">
+            <p className="max-w-xs text-sm leading-7 text-[color:var(--muted-copy)]">
               {siteContent.footerCopy}
+            </p>
+            <p className="max-w-xs pt-2 text-[0.7rem] leading-6 text-[color:var(--muted-copy)]/80">
+              Made from scratch in a small Wicklow kitchen. Allergens on request.
+              Please let us know about dietary needs when you order.
             </p>
           </div>
 
@@ -89,12 +99,50 @@ export function SiteFooter() {
               </li>
             </ul>
           </div>
+
+          {/* Newsletter */}
+          <div className="space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--deep-charcoal)]">
+              Stay in Touch
+            </p>
+            <p className="text-sm leading-6 text-[color:var(--muted-copy)]">
+              Occasional notes about new flavours, limited drops, and when the order
+              book opens.
+            </p>
+            <form
+              action="https://formspree.io/f/placeholder"
+              method="POST"
+              className="flex flex-col gap-2"
+              aria-label="Newsletter signup"
+            >
+              <label htmlFor="footer-email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="footer-email"
+                type="email"
+                name="email"
+                required
+                placeholder="you@email.ie"
+                className="border border-[color:var(--line)] bg-[color:var(--ivory)] px-3 py-2.5 text-sm text-[color:var(--deep-charcoal)] placeholder:text-[color:var(--muted-copy)]/60 focus:border-[color:var(--berry-deep)] focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="cakish-cta-secondary !min-h-0 !px-4 !py-2.5 !text-[0.66rem]"
+              >
+                Subscribe
+              </button>
+            </form>
+            <p className="text-[0.66rem] leading-5 text-[color:var(--muted-copy)]/75">
+              We never share your address. Unsubscribe in one click.
+            </p>
+          </div>
         </div>
 
         {/* Bottom row */}
-        <div className="mt-10 flex flex-col items-center gap-3 border-t border-[color:var(--line)] pt-6 text-xs text-[color:var(--muted-copy)] md:flex-row md:justify-between">
+        <div className="mt-12 flex flex-col items-center gap-3 border-t border-[color:var(--line)] pt-6 text-xs text-[color:var(--muted-copy)] md:flex-row md:justify-between">
           <p>&copy; {new Date().getFullYear()} Cakish. Handcrafted in Wicklow, Ireland.</p>
-          <p className="uppercase tracking-[0.16em]">Collection only &middot; Wicklow, Ireland</p>
+          <p className="uppercase tracking-[0.16em]">Collection only · Wicklow, Ireland</p>
         </div>
       </div>
     </footer>

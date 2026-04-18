@@ -22,12 +22,26 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* Under Construction Banner — remove by setting NEXT_PUBLIC_SHOW_BANNER=false */}
+      {/* Launch Banner — remove by setting NEXT_PUBLIC_SHOW_BANNER=false */}
       {process.env.NEXT_PUBLIC_SHOW_BANNER !== "false" && (
       <div className="bg-[color:var(--deep-charcoal)] px-4 py-3 text-center">
-        <p className="text-xs font-bold uppercase tracking-[0.25em] text-[color:var(--soft-gold)] md:text-sm">
-          🚧&nbsp; Under Construction — Coming Soon &nbsp;🚧
+        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[color:var(--soft-gold)] sm:text-xs">
+          Taking orders from May 1 · Follow&nbsp;
+          <a
+            href="https://www.instagram.com/cakish.ie/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-[color:var(--soft-gold)]/50 underline-offset-4 transition-colors hover:text-[color:var(--ivory)]"
+          >
+            @cakish.ie
+          </a>
+          &nbsp;for the opening.
         </p>
+        {process.env.NEXT_PUBLIC_IS_DEV === "true" && (
+          <p className="mt-1 text-[0.55rem] font-medium uppercase tracking-[0.22em] text-[color:var(--ivory)]/55">
+            Preview build · cakish.pages.dev
+          </p>
+        )}
       </div>
       )}
       <header className="sticky top-0 z-40 overflow-x-hidden border-b border-[color:var(--line)] bg-[rgba(250,250,248,0.96)] backdrop-blur-md">
@@ -65,7 +79,7 @@ export function SiteHeader() {
                 <span>
                   {item.label}
                   {active && (
-                    <span className="mt-0.5 block h-px w-full bg-[color:var(--soft-gold)]" />
+                    <span className="mt-0.5 block h-px w-full bg-[color:var(--berry-deep)]" />
                   )}
                 </span>
               </Link>
@@ -73,7 +87,7 @@ export function SiteHeader() {
           })}
           <Link
             href="/order/"
-            className="cakish-button hidden !min-h-0 !px-5 !py-2.5 !text-[0.68rem] md:inline-flex"
+            className="cakish-cta-primary hidden !min-h-0 !px-5 !py-2.5 !text-[0.68rem] md:inline-flex"
             aria-label="Order a pavlova"
           >
             Order Now

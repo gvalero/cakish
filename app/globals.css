@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  /* ── Color: existing palette ── */
   --ivory: #fafaf8;
   --soft-cream: #f5f2ed;
   --warm-beige: #e9e1d6;
@@ -10,8 +11,20 @@
   --line: #e8e2da;
   --body-copy: #3d3a36;
   --muted-copy: #6b665e;
+
+  /* ── Color: redesign additions ── */
+  --berry-deep: #8a3a3a;           /* muted raspberry, from berry photography */
+  --rose-wash: rgba(216, 167, 167, 0.08);   /* hover tint for primary CTA */
+  --rose-soft: rgba(216, 167, 167, 0.18);   /* selected-state soft bg */
+  --charcoal-soft: rgba(30, 30, 30, 0.04);  /* section wash */
+  --shadow-elev: 0 10px 30px -12px rgba(30, 30, 30, 0.18), 0 2px 6px -2px rgba(30, 30, 30, 0.08);
+
+  /* ── Type stacks ── */
   --font-sans: "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
   --font-serif: "Baskerville", "Palatino Linotype", "Book Antiqua", serif;
+
+  /* ── Easing ── */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
@@ -29,7 +42,7 @@ html {
 
 body {
   min-height: 100vh;
-  background-color: #fafaf8;
+  background-color: var(--ivory);
   color: var(--deep-charcoal);
   font-family: var(--font-sans);
   overflow-x: hidden;
@@ -44,41 +57,156 @@ a {
   background: rgba(184, 149, 106, 0.2);
 }
 
-/* ── Buttons ── */
+/* ── Tabular numerics for prices / sizes ── */
+.cakish-numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* ── Eyebrow micro-label (uppercase, slightly tighter tracking at small sizes) ── */
+.cakish-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft-gold);
+}
+
+.cakish-eyebrow-berry {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--berry-deep);
+}
+
+/* ── Editorial pull-quote: oversized italic serif ── */
+.cakish-pullquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--deep-charcoal);
+}
+
+/* ── Display headline (hero) ── */
+.cakish-display {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--deep-charcoal);
+}
+
+.cakish-display em {
+  font-style: italic;
+}
+
+/* ── CTAs (three-tier system) ── */
+
+/* Primary — charcoal fill, arrow glyph, rose wash on hover */
+.cakish-cta-primary,
+.cakish-cta-secondary,
 .cakish-button,
 .cakish-button-secondary {
   display: inline-flex;
-  min-height: 3rem;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  padding: 0.75rem 2rem;
-  font-size: 0.78rem;
+  gap: 0.5rem;
+  border-radius: 2px;
+  padding: 0.95rem 2rem;
+  min-height: 3.25rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  transition: opacity 160ms ease, background-color 160ms ease;
+  transition: background-color 220ms var(--ease-editorial),
+              color 220ms var(--ease-editorial),
+              opacity 220ms var(--ease-editorial),
+              transform 220ms var(--ease-editorial);
+  font-variant-numeric: tabular-nums;
 }
 
+.cakish-cta-primary,
 .cakish-button {
   background: var(--deep-charcoal);
   color: var(--ivory);
   border: 1px solid var(--deep-charcoal);
 }
 
-.cakish-button:hover {
-  opacity: 0.82;
+.cakish-cta-primary::after,
+.cakish-button::after {
+  content: "→";
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: 0;
+  transition: transform 220ms var(--ease-editorial);
 }
 
+.cakish-cta-primary:hover,
+.cakish-button:hover {
+  background: linear-gradient(var(--rose-wash), var(--rose-wash)), var(--deep-charcoal);
+  opacity: 1;
+}
+
+.cakish-cta-primary:hover::after,
+.cakish-button:hover::after {
+  transform: translateX(3px);
+}
+
+.cakish-cta-secondary,
 .cakish-button-secondary {
   border: 1px solid var(--deep-charcoal);
   background: transparent;
   color: var(--deep-charcoal);
 }
 
+.cakish-cta-secondary:hover,
 .cakish-button-secondary:hover {
   background: var(--deep-charcoal);
   color: var(--ivory);
+}
+
+/* On charcoal section, inverted secondary */
+.cakish-cta-secondary-inverse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 2px;
+  padding: 0.95rem 2rem;
+  min-height: 3.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid var(--ivory);
+  background: transparent;
+  color: var(--ivory);
+  transition: background-color 220ms var(--ease-editorial), color 220ms var(--ease-editorial);
+}
+
+.cakish-cta-secondary-inverse:hover {
+  background: var(--ivory);
+  color: var(--deep-charcoal);
+}
+
+/* Tertiary — inline italic serif link with berry underline */
+.cakish-link {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--deep-charcoal);
+  text-decoration: underline;
+  text-decoration-color: var(--berry-deep);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-thickness 180ms var(--ease-editorial);
+}
+
+.cakish-link:hover {
+  text-decoration-thickness: 2px;
 }
 
 /* ── Divider ── */
@@ -88,12 +216,113 @@ a {
   margin: 0;
 }
 
+/* ── Section rhythms ── */
+.cakish-section-open {
+  padding-block: 5rem;
+}
+@media (min-width: 768px) {
+  .cakish-section-open { padding-block: 8rem; }
+}
+
+.cakish-section-editorial {
+  padding-block: 3.5rem;
+}
+@media (min-width: 768px) {
+  .cakish-section-editorial { padding-block: 5.5rem; }
+}
+
+.cakish-section-tight {
+  padding-block: 2rem;
+}
+@media (min-width: 768px) {
+  .cakish-section-tight { padding-block: 3rem; }
+}
+
+/* ── Cream section wash ── */
+.cakish-section-cream {
+  background-color: var(--soft-cream);
+}
+
+/* ── Reversed (charcoal) section ── */
+.cakish-section-dark {
+  background-color: var(--deep-charcoal);
+  color: var(--ivory);
+}
+
+.cakish-section-dark .cakish-eyebrow {
+  color: var(--muted-rose);
+}
+
+/* ── Fade-in-up on scroll ── */
+.cakish-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms var(--ease-editorial), transform 600ms var(--ease-editorial);
+}
+
+.cakish-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Ken Burns (subtle) ── */
+.cakish-kenburns {
+  animation: cakish-kb 10s var(--ease-editorial) 300ms 1 forwards;
+}
+
+@keyframes cakish-kb {
+  from { transform: scale(1); }
+  to   { transform: scale(1.035); }
+}
+
+/* ── SVG checkmark draw (success page) ── */
+.cakish-check {
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: cakish-draw 700ms var(--ease-editorial) 200ms forwards;
+}
+.cakish-check-circle {
+  stroke-dasharray: 180;
+  stroke-dashoffset: 180;
+  animation: cakish-draw 900ms var(--ease-editorial) forwards;
+}
+@keyframes cakish-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ── Hero band cream wash overlay (for /order editorial hero) ── */
+.cakish-hero-band-overlay {
+  background: linear-gradient(
+    to right,
+    var(--soft-cream) 0%,
+    rgba(245, 242, 237, 0.92) 40%,
+    rgba(245, 242, 237, 0.6) 70%,
+    rgba(245, 242, 237, 0.3) 100%
+  );
+}
+
+/* ── Mobile button hygiene ── */
 @media (max-width: 767px) {
+  .cakish-cta-primary,
+  .cakish-cta-secondary,
   .cakish-button,
-  .cakish-button-secondary {
+  .cakish-button-secondary,
+  .cakish-cta-secondary-inverse {
     width: 100%;
     min-height: 3rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 0.75rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.78rem;
   }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .cakish-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .cakish-kenburns { animation: none; }
+  .cakish-check, .cakish-check-circle { stroke-dashoffset: 0; animation: none; }
+  html { scroll-behavior: auto; }
 }
