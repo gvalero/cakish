@@ -3,4 +3,8 @@ Allow: /
 Disallow: /v1/
 Disallow: /test-payment/
 
-Sitemap: https://cakish.ie/sitemap.xml
+# LLM discoverability — see https://llmstxt.org
+# Full machine-readable site description for AI assistants:
+# https://cakish.pages.dev/llms.txt
+
+Sitemap: https://cakish.pages.dev/sitemap.xml
