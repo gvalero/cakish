@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "cakish-web-temp/**",
+    // Archived static export; lint the source that produced it instead.
+    "public/v1/**",
   ]),
 ]);
 
