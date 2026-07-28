@@ -2,15 +2,11 @@ name = "cakish-stripe-checkout"
 main = "stripe-checkout.js"
 compatibility_date = "2025-01-01"
 
-# After `wrangler d1 create cakish-orders-production`, uncomment this block and
-# replace database_id with the real ID printed by Wrangler. Never reuse the
-# production database in development.
-#
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "cakish-orders-production"
-# database_id = "replace-with-real-d1-id"
-# migrations_dir = "migrations"
+[[d1_databases]]
+binding = "DB"
+database_name = "cakish-orders-production"
+database_id = "bd11a87e-7038-4e99-9560-daeb1785f51c"
+migrations_dir = "migrations"
 
 [vars]
 NOTIFY_EMAIL = "hello@cakish.ie"
