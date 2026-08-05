@@ -30,9 +30,11 @@ export default function OrderSuccessPage() {
     const sessionId = params.get("session_id");
 
     if (!sessionId) {
-      setError("No session ID found. If you just completed a payment, check your email for confirmation.");
-      setLoading(false);
-      return;
+      const timer = window.setTimeout(() => {
+        setError("No session ID found. If you just completed a payment, check your email for confirmation.");
+        setLoading(false);
+      }, 0);
+      return () => window.clearTimeout(timer);
     }
 
     const workerUrl = process.env.NEXT_PUBLIC_STRIPE_WORKER_URL || "https://cakish-stripe-checkout.valerogian.workers.dev";
@@ -90,7 +92,7 @@ export default function OrderSuccessPage() {
     );
   }
 
-  if (order?.status !== "paid") {
+  if (order?.status !== "paid" && order?.status !== "no_payment_required") {
     return (
       <div className="mx-auto max-w-lg px-4 py-20 text-center">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--soft-gold)]">
@@ -132,8 +134,8 @@ export default function OrderSuccessPage() {
           Thank you, {order.customerName}!
         </h1>
         <p className="mt-4 text-sm leading-6 text-[color:var(--body-copy)]">
-          Your pavlova order has been confirmed and payment received. A confirmation email has been sent to{" "}
-          <strong>{order.customerEmail}</strong>.
+          Your pavlova order has been confirmed and payment received. We&apos;ll use{" "}
+          <strong>{order.customerEmail}</strong> for your confirmation and collection details.
         </p>
       </div>
 

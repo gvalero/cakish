@@ -8,9 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "worker:preflight": "node scripts/check-d1-binding.mjs worker/wrangler.toml",
+    "worker:check": "wrangler deploy --dry-run --config worker/wrangler.toml"
   },
   "dependencies": {
+    "jose": "^6.2.3",
     "next": "16.2.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -25,6 +28,7 @@
     "playwright": "^1.59.1",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.4",
+    "wrangler": "^4.112.0"
   }
 }

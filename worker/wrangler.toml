@@ -2,9 +2,28 @@ name = "cakish-stripe-checkout"
 main = "stripe-checkout.js"
 compatibility_date = "2025-01-01"
 
-# Set via: npx wrangler secret put STRIPE_SECRET_KEY
-# Use sk_test_... for testing, sk_live_... for production
+[[d1_databases]]
+binding = "DB"
+database_name = "cakish-orders-production"
+database_id = "bd11a87e-7038-4e99-9560-daeb1785f51c"
+migrations_dir = "migrations"
 
 [vars]
+# Stripe-only mode: Stripe sends customer receipts; no custom customer or baker email.
+CUSTOM_EMAILS_ENABLED = "false"
 NOTIFY_EMAIL = "hello@cakish.ie"
 WHATSAPP_PHONE = "353834462295"
+RESEND_FROM = "Cakish <orders@cakish.ie>"
+# Canonical checkout return origin and exact browser origins allowed to call the
+# public checkout/status routes. Both current production hostnames are allowed.
+STOREFRONT_URL = "https://cakish.ie"
+ALLOWED_STOREFRONT_ORIGINS = "https://cakish.ie,https://www.cakish.ie"
+# ACCESS_TEAM_DOMAIN accepts only the hostname form <team>.cloudflareaccess.com
+# (no scheme or path). ACCESS_AUD is the exact Access application AUD tag.
+# Configure all three Access values together; partial configuration fails closed.
+# ACCESS_TEAM_DOMAIN = "your-team.cloudflareaccess.com"
+# ACCESS_AUD = "replace-with-access-application-aud"
+# ADMIN_ALLOWED_EMAILS = "owner@example.com"
+
+# Secrets are configured with `wrangler secret put`:
+# STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY, ADMIN_API_SECRET

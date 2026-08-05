@@ -2,13 +2,20 @@ name: Deploy Stripe Worker
 
 on:
   push:
-    branches: [dev, main]
+    # Production Worker deploys only from main. The previous dev trigger used
+    # the same Worker name and could overwrite production.
+    branches: [main]
     paths:
       - "worker/**"
+      - "scripts/check-d1-binding.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/deploy-worker.yml"
   workflow_dispatch:
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,14 +26,27 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate production D1 binding
+        run: npm run worker:preflight
+
+      - name: Apply D1 migrations
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.112.0"
+          command: d1 migrations apply DB --remote
+          workingDirectory: worker
+
       - name: Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "3.114.0"
+          wranglerVersion: "4.112.0"
           command: deploy
           workingDirectory: worker
-        # Worker secrets (STRIPE_SECRET_KEY, NOTIFY_EMAIL, WHATSAPP_PHONE)
-        # are managed via the Cloudflare dashboard or `wrangler secret put`.
-        # They persist across deploys and don't need to be re-pushed here.
+        # This step is unreachable unless binding validation and migrations pass.
