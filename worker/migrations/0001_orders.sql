@@ -19,14 +19,14 @@ CREATE TABLE orders (
   fulfillment_status TEXT NOT NULL DEFAULT 'new'
     CHECK (fulfillment_status IN ('new', 'confirmed', 'baking', 'ready', 'collected', 'cancelled')),
   internal_notes TEXT NOT NULL DEFAULT '' CHECK (length(internal_notes) <= 2000),
-  baker_notification_status TEXT NOT NULL DEFAULT 'pending'
-    CHECK (baker_notification_status IN ('pending', 'sending', 'sent', 'failed')),
+  baker_notification_status TEXT NOT NULL DEFAULT 'disabled'
+    CHECK (baker_notification_status IN ('disabled', 'pending', 'sending', 'sent', 'failed')),
   baker_notification_attempts INTEGER NOT NULL DEFAULT 0 CHECK (baker_notification_attempts >= 0),
   baker_notification_last_attempt_at TEXT,
   baker_notification_sent_at TEXT,
   baker_notification_error TEXT,
-  customer_notification_status TEXT NOT NULL DEFAULT 'pending'
-    CHECK (customer_notification_status IN ('pending', 'sending', 'sent', 'failed')),
+  customer_notification_status TEXT NOT NULL DEFAULT 'disabled'
+    CHECK (customer_notification_status IN ('disabled', 'pending', 'sending', 'sent', 'failed')),
   customer_notification_attempts INTEGER NOT NULL DEFAULT 0 CHECK (customer_notification_attempts >= 0),
   customer_notification_last_attempt_at TEXT,
   customer_notification_sent_at TEXT,

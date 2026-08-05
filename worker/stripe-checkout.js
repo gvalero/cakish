@@ -1,5 +1,6 @@
 import { handleAdmin } from "./admin.js";
 import {
+  customEmailsEnabled,
   deliverPendingNotifications,
   persistWebhookOrder,
   verifyStripeSignature,
@@ -323,8 +324,13 @@ export async function handleStripeWebhook(request, env) {
   }
 
   try {
-    const persisted = await persistWebhookOrder(env.DB, event);
-    const notifications = await deliverPendingNotifications(env.DB, env, persisted.order.id);
+    const emailsEnabled = customEmailsEnabled(env);
+    const persisted = await persistWebhookOrder(env.DB, event, {
+      customEmailsEnabled: emailsEnabled,
+    });
+    const notifications = emailsEnabled
+      ? await deliverPendingNotifications(env.DB, env, persisted.order.id)
+      : { baker: "disabled", customer: "disabled" };
     if (Object.values(notifications).includes("failed")) {
       return privateJson({
         error: "Notification delivery incomplete",

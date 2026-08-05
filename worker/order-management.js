@@ -11,6 +11,10 @@ const SIGNATURE_TOLERANCE_SECONDS = 300;
 export const NOTIFICATION_CLAIM_LEASE_SECONDS = 15 * 60;
 const encoder = new TextEncoder();
 
+export function customEmailsEnabled(env) {
+  return env?.CUSTOM_EMAILS_ENABLED === "true";
+}
+
 function bytesToHex(bytes) {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
@@ -112,14 +116,23 @@ export function orderFromStripeSession(session, now = new Date()) {
   };
 }
 
-export async function persistWebhookOrder(db, event, now = new Date()) {
+export async function persistWebhookOrder(db, event, options = {}) {
+  const now = options instanceof Date
+    ? options
+    : options.now instanceof Date
+      ? options.now
+      : new Date();
+  const notificationStatus = !(options instanceof Date) && options.customEmailsEnabled === true
+    ? "pending"
+    : "disabled";
   const order = orderFromStripeSession(event.data.object, now);
   const upsert = db.prepare(`
     INSERT INTO orders (
       stripe_session_id, customer_name, customer_email, collection_date, product,
       size, filling, finish, topper, quantity, customer_note, amount_total, currency,
-      payment_status, stripe_created_at, created_at, updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      payment_status, baker_notification_status, customer_notification_status,
+      stripe_created_at, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(stripe_session_id) DO UPDATE SET
       payment_status = excluded.payment_status,
       amount_total = excluded.amount_total,
@@ -140,6 +153,8 @@ export async function persistWebhookOrder(db, event, now = new Date()) {
     order.amountTotal,
     order.currency,
     order.paymentStatus,
+    notificationStatus,
+    notificationStatus,
     order.stripeCreatedAt,
     order.now,
     order.now,
@@ -327,6 +342,13 @@ function notificationMessage(order, recipient, env) {
 
 export async function deliverPendingNotifications(db, env, orderId, options = {}) {
   const recipients = options.recipients || ["baker", "customer"];
+  if (!customEmailsEnabled(env)) {
+    return Object.fromEntries(
+      recipients
+        .filter((recipient) => ["baker", "customer"].includes(recipient))
+        .map((recipient) => [recipient, "disabled"]),
+    );
+  }
   const executionTime = options.now instanceof Date ? options.now : new Date();
   const claimTime = executionTime.toISOString();
   const staleBefore = new Date(

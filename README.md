@@ -2,10 +2,12 @@
 
 Cakish is a statically exported Next.js storefront with a Cloudflare Worker for
 Stripe Checkout. Signed Stripe webhooks write an operational order copy to
-Cloudflare D1 and trigger baker and customer emails through Resend. The Worker
-also serves a small authenticated order dashboard at `/admin`.
+Cloudflare D1. The Worker also serves a small authenticated order dashboard at
+`/admin`.
 
-Stripe remains the payment authority. D1 is only the fulfilment view.
+Stripe remains the payment authority and sends the customer payment receipt.
+D1 is the operator fulfilment view; operators use it alongside Stripe alerts.
+The initial Stripe-only mode sends no custom customer or baker email.
 
 ## Local development
 
@@ -63,7 +65,6 @@ Set secrets interactively; never commit their values:
 ```powershell
 npx wrangler secret put STRIPE_SECRET_KEY --config worker\wrangler.toml
 npx wrangler secret put STRIPE_WEBHOOK_SECRET --config worker\wrangler.toml
-npx wrangler secret put RESEND_API_KEY --config worker\wrangler.toml
 npx wrangler secret put ADMIN_API_SECRET --config worker\wrangler.toml
 ```
 
@@ -72,8 +73,28 @@ exchanges it over HTTPS for an HttpOnly, Secure, SameSite cookie; it is never
 placed in a URL or localStorage. API clients may instead send
 `Authorization: Bearer <secret>`. Never embed that header in HTML.
 
-Set `NOTIFY_EMAIL` and verified `RESEND_FROM` under `[vars]`. Missing Resend
-configuration is a recorded notification failure, not a successful no-op.
+`CUSTOM_EMAILS_ENABLED` is an explicit string switch and is set to `"false"` in
+production. Any value other than exactly `"true"` is safely treated as disabled.
+In this mode each new order records both custom notification states as
+`disabled`, no Resend request occurs, and successful persistence returns 2xx to
+Stripe. Stripe's live **Successful payments** customer email setting must remain
+enabled. Stripe receipts are the customer communication; Stripe alerts and the
+D1 dashboard are the baker/operator workflow.
+
+To enable custom Resend emails later:
+
+1. Verify the sending domain/address and set `RESEND_FROM` and `NOTIFY_EMAIL`.
+2. Set `RESEND_API_KEY` with `npx wrangler secret put RESEND_API_KEY --config
+   worker\wrangler.toml`.
+3. Test customer and baker messages, failure recording, retry, and dashboard
+   access in a non-production environment.
+4. Set `CUSTOM_EMAILS_ENABLED = "true"` and deploy that reviewed configuration.
+
+Orders created while custom email is off remain `disabled`. Webhook replay and
+the admin retry endpoint do not queue or send them after the switch is enabled.
+Enabling applies only to newly inserted orders. Queue old orders only through a
+separately reviewed D1 migration that changes the intended recipients from
+`disabled` to `pending`; do not label unsent mail as `sent`.
 
 `STOREFRONT_URL` is the canonical HTTPS origin used for every Stripe success and
 cancel URL; it must not contain a path, query, or fragment.
@@ -132,10 +153,12 @@ Bearer API mutations do not use cookies and are CSRF-exempt.
 The dashboard lists 25 orders at a time, shows order, collection, payment,
 fulfilment, notes, and independent notification outcomes, and permits only:
 `new`, `confirmed`, `baking`, `ready`, `collected`, `cancelled`. Internal notes
-are limited to 2,000 characters. Retry sends only pending or failed
-notifications; successful notifications are not duplicated. A `sending` claim
-is leased for 15 minutes. Fresh claims cannot be taken by another execution;
-stale claims are reclaimed independently for baker and customer delivery.
+are limited to 2,000 characters. Disabled custom notifications are identified
+as such and retry controls are hidden. When custom email is enabled, retry sends
+only pending or failed notifications; successful notifications are not
+duplicated. A `sending` claim is leased for 15 minutes. Fresh claims cannot be
+taken by another execution; stale claims are reclaimed independently for baker
+and customer delivery.
 Resend requests retain one stable per-order/per-recipient idempotency key across
 retries.
 
@@ -154,8 +177,9 @@ Remove-Item .\private-backfill.sql
 ```
 
 Do not insert a `stripe_events` row unless it represents a real signed event.
-Set notification states to `sent` only when delivery is independently known;
-otherwise use `pending`. Reconcile row totals and Session IDs against Stripe
+Set notification states to `sent` only when delivery is independently known.
+Use `disabled` for Stripe-only orders and `pending` only when custom delivery is
+intentionally queued. Reconcile row totals and Session IDs against Stripe
 before relying on the dashboard.
 
 ## Operations and recovery
@@ -163,7 +187,8 @@ before relying on the dashboard.
 1. Check Stripe webhook delivery history for failed or delayed events.
 2. Compare paid Checkout Session IDs in Stripe with D1 for the affected period.
 3. Retry failed Stripe deliveries after service/database recovery.
-4. Use the dashboard to retry recorded pending/failed email deliveries.
+4. When custom email is enabled, use the dashboard to retry recorded
+   pending/failed deliveries. In Stripe-only mode, use Stripe alerts and D1.
 5. If an event can no longer be replayed, use the controlled manual SQL
    backfill procedure above, preserving the Stripe Session ID.
 6. Export D1 before risky changes and periodically test restoration. D1 free
@@ -183,9 +208,12 @@ Provider response bodies and customer details are not returned publicly.
 - Refunds, disputes, Checkout expiration, and cancellation changes are not
   automatically synchronized. Verify them in Stripe and update operational
   status manually.
-- Email depends on Resend, sender verification, quotas, and provider
-  availability. Retries are manual or caused by a replayed webhook; there is no
-  unlimited scheduled retry queue.
+- Stripe receipts contain payment information, not the custom order-confirmation
+  content, and Stripe-only mode sends no baker email. Operators must monitor
+  Stripe alerts and the D1 dashboard.
+- When custom email is enabled, it depends on Resend, sender verification,
+  quotas, and provider availability. Retries are manual or caused by a replayed
+  webhook; there is no unlimited scheduled retry queue.
 - Email delivery is not truly exactly-once. If execution stops after Resend
   accepts a message but before D1 records `sent`, the claim is reclaimed after
   15 minutes. The stable provider idempotency key normally deduplicates that
@@ -195,22 +223,23 @@ Provider response bodies and customer details are not returned publicly.
 - D1 free-tier capacity and backup/export constraints require monitoring.
 - Operators are responsible for GDPR lawful basis, access control, data
   minimization, retention/deletion schedules, data-subject requests, and breach
-  handling for customer data in Stripe, D1, Resend, logs, and backups.
+  handling for customer data in Stripe, D1, logs, backups, and Resend if enabled.
 - Test, staging, and production need separate Stripe keys/webhook secrets, D1
-  databases, Worker names/routes, Resend configuration, and admin policies.
+  databases, Worker names/routes, email-mode configuration, and admin policies.
 
 ## Deployment safety
 
 Do not deploy until the real D1 binding, migrations, secrets, Stripe endpoint,
-Resend sender, and admin edge policy are configured and tested. Exact first
-release sequence:
+Stripe receipt setting, and admin edge policy are configured and tested. Exact
+first release sequence:
 
 1. Create the production D1 database and back it up/test migrations as described
    above.
 2. Uncomment the `[[d1_databases]]` block in `worker/wrangler.toml`, retain
    `binding = "DB"`, and insert the real D1 UUID (never a placeholder).
-3. Configure Worker secrets, storefront variables, Resend, Stripe webhook, and
-   Access; validate in a non-production environment.
+3. Retain `CUSTOM_EMAILS_ENABLED = "false"`; configure Worker secrets,
+   storefront variables, Stripe webhook/receipts, and Access; validate in a
+   non-production environment. Resend is not required for this initial mode.
 4. Merge to `main`. The workflow installs locked dependencies and runs the D1
    preflight before any Cloudflare command.
 5. Only after the preflight passes, the workflow applies remote D1 migrations.

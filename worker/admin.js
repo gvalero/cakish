@@ -1,5 +1,6 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 import {
+  customEmailsEnabled,
   deliverPendingNotifications,
   getOrderById,
   listOrders,
@@ -274,7 +275,7 @@ ${configured ? '<form method="post" action="/admin/login"><label>Admin secret<in
 </main></body></html>`, { status, headers: secureHeaders("text/html; charset=utf-8", nonce) });
 }
 
-function dashboardPage(csrf) {
+function dashboardPage(csrf, emailsEnabled) {
   const nonce = crypto.randomUUID();
   return new Response(`<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
@@ -294,6 +295,7 @@ dl{display:grid;grid-template-columns:9rem 1fr;gap:.45rem;margin:0}dt{font-weigh
 <section class="panel"><h2>Order detail</h2><div id="detail" class="muted">Select an order.</div></section></div></main>
 <script nonce="${nonce}">
 const csrf=document.querySelector('meta[name="csrf-token"]').content;
+const customEmailsEnabled=${emailsEnabled};
 const orders=document.getElementById("orders"),detail=document.getElementById("detail"),message=document.getElementById("message"),more=document.getElementById("more");
 let cursor=null, selected=null;
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -306,8 +308,10 @@ async function show(id){try{selected=id;const order=await api("/admin/api/orders
  "<dl>"+["stripe_session_id","customer_name","customer_email","collection_date","product","size","filling","finish","topper","quantity","customer_note","amount_total","currency","payment_status","fulfillment_status","internal_notes","baker_notification_status","baker_notification_attempts","baker_notification_last_attempt_at","baker_notification_error","customer_notification_status","customer_notification_attempts","customer_notification_last_attempt_at","customer_notification_error","created_at","updated_at"].map(k=>"<dt>"+esc(k.replaceAll("_"," "))+"</dt><dd>"+esc(order[k])+"</dd>").join("")+"</dl>"+
  '<form id="update"><div class="field"><label>Status<select name="fulfillmentStatus">'+["new","confirmed","baking","ready","collected","cancelled"].map(s=>'<option '+(order.fulfillment_status===s?"selected":"")+">"+s+"</option>").join("")+'</select></label></div>'+
  '<div class="field"><label>Internal notes<textarea name="internalNotes" maxlength="2000">'+esc(order.internal_notes)+'</textarea></label></div><button class="primary">Save</button></form>'+
- '<p><button id="retry">Retry pending/failed notifications</button></p>';
- document.getElementById("update").onsubmit=save;document.getElementById("retry").onclick=retry}catch(error){message.textContent=error.message}}
+ (!customEmailsEnabled||order.baker_notification_status==="disabled"&&order.customer_notification_status==="disabled"
+   ? '<p class="muted">Custom emails are disabled for this order. Stripe handles the customer receipt; there is no baker email.</p>'
+   : '<p><button id="retry">Retry pending/failed notifications</button></p>');
+ document.getElementById("update").onsubmit=save;const retryButton=document.getElementById("retry");if(retryButton)retryButton.onclick=retry}catch(error){message.textContent=error.message}}
 async function save(event){event.preventDefault();const form=new FormData(event.target);try{await api("/admin/api/orders/"+selected,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({fulfillmentStatus:form.get("fulfillmentStatus"),internalNotes:form.get("internalNotes")})});message.textContent="Order saved.";await show(selected);await load(true)}catch(error){message.textContent=error.message}}
 async function retry(){try{const result=await api("/admin/api/orders/"+selected+"/retry",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});message.textContent="Notification result: "+JSON.stringify(result.outcomes);await show(selected)}catch(error){message.textContent=error.message}}
 document.getElementById("refresh").onclick=()=>load(true);more.onclick=()=>load();load(true);
@@ -371,7 +375,7 @@ export async function handleAdmin(request, env, url) {
     );
   }
   if (request.method === "GET" && url.pathname === "/admin") {
-    const response = dashboardPage(csrf || "");
+    const response = dashboardPage(csrf || "", customEmailsEnabled(env));
     for (const [key, value] of responseHeaders) response.headers.set(key, value);
     return response;
   }

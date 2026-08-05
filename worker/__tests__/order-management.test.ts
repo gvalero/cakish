@@ -84,7 +84,7 @@ class FakeStatement {
         existing.payment_status = this.arguments[13];
         existing.amount_total = this.arguments[11];
         existing.currency = this.arguments[12];
-        existing.updated_at = this.arguments[16];
+        existing.updated_at = this.arguments[18];
       } else {
         this.database.orders.push({
           id: this.database.orders.length + 1,
@@ -102,15 +102,15 @@ class FakeStatement {
           amount_total: this.arguments[11],
           currency: this.arguments[12],
           payment_status: this.arguments[13],
-          stripe_created_at: this.arguments[14],
+          baker_notification_status: this.arguments[14],
+          customer_notification_status: this.arguments[15],
+          stripe_created_at: this.arguments[16],
           fulfillment_status: "new",
           internal_notes: "",
-          baker_notification_status: "pending",
           baker_notification_attempts: 0,
-          customer_notification_status: "pending",
           customer_notification_attempts: 0,
-          created_at: this.arguments[15],
-          updated_at: this.arguments[16],
+          created_at: this.arguments[17],
+          updated_at: this.arguments[18],
         });
       }
       return { meta: { changes: 1 } };
@@ -207,6 +207,63 @@ describe("Stripe signature verification", () => {
 });
 
 describe("webhook order handling", () => {
+  it("persists honest disabled states in Stripe-only mode without Resend calls or replay retries", async () => {
+    const database = new FakeD1();
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const payload = JSON.stringify(checkoutEvent());
+    const timestamp = Math.floor(Date.now() / 1000);
+    const stripeHeaderValue = await stripeHeader(payload, "whsec_test", timestamp);
+    const request = () => new Request("https://worker.test/webhooks/stripe", {
+      method: "POST",
+      headers: { "Stripe-Signature": stripeHeaderValue },
+      body: payload,
+    });
+    const environment = {
+      DB: database,
+      STRIPE_WEBHOOK_SECRET: "whsec_test",
+      CUSTOM_EMAILS_ENABLED: "false",
+    };
+
+    const first = await workerFetch(request(), environment);
+    expect(first.status).toBe(200);
+    expect(await first.json()).toMatchObject({
+      received: true,
+      replay: false,
+      notifications: { baker: "disabled", customer: "disabled" },
+    });
+    expect(database.orders).toHaveLength(1);
+    expect(database.orders[0].baker_notification_status).toBe("disabled");
+    expect(database.orders[0].customer_notification_status).toBe("disabled");
+    expect(database.orders[0].baker_notification_attempts).toBe(0);
+    expect(database.orders[0].customer_notification_attempts).toBe(0);
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    const replay = await workerFetch(request(), environment);
+    expect(replay.status).toBe(200);
+    expect(await replay.json()).toMatchObject({
+      received: true,
+      replay: true,
+      notifications: { baker: "disabled", customer: "disabled" },
+    });
+    expect(database.orders).toHaveLength(1);
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    const enabledReplay = await workerFetch(request(), {
+      ...environment,
+      CUSTOM_EMAILS_ENABLED: "true",
+      RESEND_API_KEY: "re_test",
+      RESEND_FROM: "Cakish <orders@example.com>",
+      NOTIFY_EMAIL: "baker@example.com",
+    });
+    expect(await enabledReplay.json()).toMatchObject({
+      received: true,
+      replay: true,
+      notifications: { baker: "unchanged", customer: "unchanged" },
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("persists a paid order, sends notifications, and treats replay as idempotent", async () => {
     const database = new FakeD1();
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response("{}", { status: 200 })));
@@ -221,6 +278,7 @@ describe("webhook order handling", () => {
     const environment = {
       DB: database,
       STRIPE_WEBHOOK_SECRET: "whsec_test",
+      CUSTOM_EMAILS_ENABLED: "true",
       RESEND_API_KEY: "re_test",
       RESEND_FROM: "Cakish <orders@example.com>",
       NOTIFY_EMAIL: "baker@example.com",
@@ -267,6 +325,7 @@ describe("webhook order handling", () => {
       .mockResolvedValue(new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
     const environment = {
+      CUSTOM_EMAILS_ENABLED: "true",
       RESEND_API_KEY: "re_test",
       RESEND_FROM: "Cakish <orders@example.com>",
       NOTIFY_EMAIL: "baker@example.com",
@@ -311,6 +370,7 @@ describe("webhook order handling", () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
     const environment = {
+      CUSTOM_EMAILS_ENABLED: "true",
       RESEND_API_KEY: "re_test",
       RESEND_FROM: "Cakish <orders@example.com>",
       NOTIFY_EMAIL: "baker@example.com",

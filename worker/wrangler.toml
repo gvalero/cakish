@@ -9,6 +9,8 @@ database_id = "bd11a87e-7038-4e99-9560-daeb1785f51c"
 migrations_dir = "migrations"
 
 [vars]
+# Stripe-only mode: Stripe sends customer receipts; no custom customer or baker email.
+CUSTOM_EMAILS_ENABLED = "false"
 NOTIFY_EMAIL = "hello@cakish.ie"
 WHATSAPP_PHONE = "353834462295"
 RESEND_FROM = "Cakish <orders@cakish.ie>"
