@@ -1,10 +1,23 @@
 import { describe, it, expect } from "vitest";
-import { products, fillingOptions, finishOptions, getProductBySlug } from "../site-data";
+import {
+  products,
+  orderableProducts,
+  fillingOptions,
+  finishOptions,
+  getProductBySlug,
+} from "../site-data";
 import type { Product } from "../site-data";
 
 describe("products data integrity", () => {
-  it("has exactly 4 products", () => {
-    expect(products).toHaveLength(4);
+  it("has four orderable products and one coming-soon product", () => {
+    expect(products).toHaveLength(5);
+    expect(orderableProducts).toHaveLength(4);
+    expect(orderableProducts.every((product) => product.availableForOrder)).toBe(true);
+
+    const banana = getProductBySlug("banana-pavlova");
+    expect(banana).toBeDefined();
+    expect(banana!.availableForOrder).toBe(false);
+    expect(banana!.image).toBe("/images/products/banana-pavlova.jpg");
   });
 
   it.each(products.map((p) => [p.name, p]))("'%s' has all required fields", (_name, product) => {
@@ -20,12 +33,17 @@ describe("products data integrity", () => {
     expect(typeof p.hasTopper).toBe("boolean");
     expect(typeof p.topperPrice).toBe("number");
     expect(typeof p.hasFinishOptions).toBe("boolean");
+    expect(typeof p.availableForOrder).toBe("boolean");
   });
 
-  it("every size has a positive price", () => {
+  it("every orderable size has a positive price", () => {
     for (const product of products) {
       for (const size of product.sizes) {
-        expect(size.price).toBeGreaterThan(0);
+        if (product.availableForOrder) {
+          expect(size.price).toBeGreaterThan(0);
+        } else {
+          expect(size.price).toBe(0);
+        }
         expect(size.id).toBeTruthy();
         expect(size.label).toBeTruthy();
         expect(size.diameter).toBeTruthy();

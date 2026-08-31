@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState, useEffect } from "react";
 import Image from "next/image";
 import {
-  products,
+  orderableProducts,
   fillingOptions,
   finishOptions,
   siteContent,
@@ -15,8 +15,8 @@ import { assetPath } from "@/lib/asset-path";
 
 export function OrderConfigurator() {
   // ── State ──
-  const [selectedProductId, setSelectedProductId] = useState(products[0].id);
-  const [selectedSizeId, setSelectedSizeId] = useState(products[0].sizes[0].id);
+  const [selectedProductId, setSelectedProductId] = useState(orderableProducts[0].id);
+  const [selectedSizeId, setSelectedSizeId] = useState(orderableProducts[0].sizes[0].id);
   const [selectedFilling, setSelectedFilling] = useState<FillingId>("nutella");
   const [selectedFinish, setSelectedFinish] = useState<FinishId>("patisserie-sliced");
   const [topperMessage, setTopperMessage] = useState("");
@@ -38,7 +38,7 @@ export function OrderConfigurator() {
     const params = new URLSearchParams(window.location.search);
     const slug = params.get("product");
     if (slug) {
-      const found = products.find((p) => p.slug === slug);
+      const found = orderableProducts.find((p) => p.slug === slug);
       if (found) {
         setSelectedProductId(found.id);
         setSelectedSizeId(found.sizes[0].id);
@@ -47,7 +47,7 @@ export function OrderConfigurator() {
   }, []);
 
   const product: Product = useMemo(
-    () => products.find((p) => p.id === selectedProductId) ?? products[0],
+    () => orderableProducts.find((p) => p.id === selectedProductId) ?? orderableProducts[0],
     [selectedProductId],
   );
 
@@ -73,7 +73,7 @@ export function OrderConfigurator() {
   // When product changes, reset size to first available
   const handleProductChange = useCallback((id: string) => {
     setSelectedProductId(id);
-    const p = products.find((pr) => pr.id === id);
+    const p = orderableProducts.find((pr) => pr.id === id);
     if (p) setSelectedSizeId(p.sizes[0].id);
     setQuantity(1);
     setTopperMessage("");
@@ -209,7 +209,7 @@ export function OrderConfigurator() {
             <StepLabel step={nextStep()} label="Choose your pavlova" />
           </legend>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {products.map((p) => {
+            {orderableProducts.map((p) => {
               const active = p.id === selectedProductId;
               return (
                 <button

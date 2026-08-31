@@ -39,6 +39,8 @@ export interface Product {
   topperPrice: number;
   /** Whether the Strawberry sharing-size finishing options apply */
   hasFinishOptions: boolean;
+  /** Whether customers can currently configure and purchase this product */
+  availableForOrder: boolean;
 }
 
 // ── Products ──
@@ -65,6 +67,7 @@ export const products: Product[] = [
     hasTopper: true,
     topperPrice: 5,
     hasFinishOptions: true,
+    availableForOrder: true,
   },
   {
     id: "heart-pavlova",
@@ -73,14 +76,15 @@ export const products: Product[] = [
     tagline: "Romance on a plate",
     description:
       "A heart-shaped pavlova that makes the perfect romantic gesture. Built on a crisp meringue base with your choice of filling, hand-piped cream, and beautifully arranged fresh strawberries. At 9 inches, it serves 8–10 guests — ideal for anniversaries, Valentine's Day, or any heartfelt celebration.",
-    image: "/images/products/generated-heart-pavlova.jpg",
-    gallery: [],
+    image: "/images/products/heart-pavlova.jpg",
+    gallery: ["/images/products/heart-pavlova-celebration.jpg"],
     sizes: [
       { id: "standard", label: "Standard", diameter: '9 inches', serves: "8–10", price: 78 },
     ],
     hasTopper: true,
     topperPrice: 5,
     hasFinishOptions: false,
+    availableForOrder: true,
   },
   {
     id: "mixed-berries-pavlova",
@@ -89,7 +93,7 @@ export const products: Product[] = [
     tagline: "A berry medley",
     description:
       "A vibrant celebration of seasonal berries atop our signature meringue base. Layered with your choice of Dulce de Leche or Nutella, hand-piped cream, and finished with a generous arrangement of strawberries, blueberries, raspberries, and blackberries. A colourful showstopper for any gathering.",
-    image: "/images/products/generated-mixed-berries-medium.jpg",
+    image: "/images/products/mixed-berries-pavlova.jpg",
     gallery: [],
     sizes: [
       { id: "small", label: "Small", diameter: '6 inches', serves: "5–7", price: 52 },
@@ -99,6 +103,7 @@ export const products: Product[] = [
     hasTopper: true,
     topperPrice: 5,
     hasFinishOptions: false,
+    availableForOrder: true,
   },
   {
     id: "raspberry-pavlova",
@@ -107,7 +112,7 @@ export const products: Product[] = [
     tagline: "Bold & beautiful",
     description:
       "Whole fresh raspberries arranged in a striking dome pattern atop our crisp meringue base, with your choice of Dulce de Leche or Nutella and hand-piped cream. The tartness of the raspberries balances beautifully with the sweet meringue and rich filling — a sophisticated choice for any occasion.",
-    image: "/images/products/generated-raspberry-medium.jpg",
+    image: "/images/products/raspberry-pavlova.jpg",
     gallery: [],
     sizes: [
       { id: "small", label: "Small", diameter: '6 inches', serves: "5–7", price: 50 },
@@ -117,8 +122,28 @@ export const products: Product[] = [
     hasTopper: true,
     topperPrice: 5,
     hasFinishOptions: false,
+    availableForOrder: true,
+  },
+  {
+    id: "banana-pavlova",
+    name: "Banana Pavlova",
+    slug: "banana-pavlova",
+    tagline: "Coming soon",
+    description:
+      "A new Cakish pavlova with fresh banana layered beneath generous hand-piped cream and finished with delicate gold leaf. Pricing, sizing, and availability are currently being finalised.",
+    image: "/images/products/banana-pavlova.jpg",
+    gallery: [],
+    sizes: [
+      { id: "details-pending", label: "Details pending", diameter: "Size TBC", serves: "TBC", price: 0 },
+    ],
+    hasTopper: true,
+    topperPrice: 5,
+    hasFinishOptions: false,
+    availableForOrder: false,
   },
 ];
+
+export const orderableProducts = products.filter((product) => product.availableForOrder);
 
 // ── Helper: look up a product by slug ──
 export function getProductBySlug(slug: string): Product | undefined {

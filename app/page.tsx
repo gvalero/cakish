@@ -64,7 +64,7 @@ export default function Home() {
                         key={p.id}
                         className="rounded-full border border-[color:var(--line)] bg-white px-4 py-2 text-xs font-medium text-[color:var(--deep-charcoal)]"
                       >
-                        {p.name}
+                        {p.name}{p.availableForOrder ? "" : " · Coming soon"}
                       </span>
                     ))}
                   </div>
@@ -110,17 +110,24 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {products.map((product) => (
-                <article key={product.id} className="group">
-                  <Link href={`/order/?product=${product.slug}`} className="block">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
+              {products.map((product) => {
+                const card = (
+                  <>
                     <div className="relative mb-4 aspect-square overflow-hidden rounded-sm bg-[color:var(--soft-cream)]">
                       <Image
                         src={assetPath(product.image)}
                         alt={`${product.name} — ${product.description.slice(0, 80)}`}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className={`object-cover transition-transform duration-500 ${
+                          product.availableForOrder ? "group-hover:scale-105" : ""
+                        }`}
                       />
+                      {!product.availableForOrder && (
+                        <span className="absolute left-3 top-3 rounded-full bg-[color:var(--deep-charcoal)] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
+                          Coming soon
+                        </span>
+                      )}
                     </div>
                     <h3 className="font-serif text-xl text-[color:var(--deep-charcoal)]">
                       {product.name}
@@ -134,13 +141,25 @@ export default function Home() {
                         : `${product.sizes[0].diameter} · Serves ${product.sizes[0].serves}`}
                     </p>
                     <p className="mt-2 text-xs font-medium text-[color:var(--deep-charcoal)]">
-                      {product.sizes[0].price > 0
+                      {product.availableForOrder
                         ? `From EUR ${Math.min(...product.sizes.map((s) => s.price))}`
                         : "Price coming soon"}
                     </p>
-                  </Link>
-                </article>
-              ))}
+                  </>
+                );
+
+                return (
+                  <article key={product.id} className="group">
+                    {product.availableForOrder ? (
+                      <Link href={`/order/?product=${product.slug}`} className="block">
+                        {card}
+                      </Link>
+                    ) : (
+                      <div aria-label={`${product.name}, coming soon`}>{card}</div>
+                    )}
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>

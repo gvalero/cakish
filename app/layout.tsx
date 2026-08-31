@@ -122,7 +122,7 @@ const bakerySchema = {
             name: "Heart Pavlova",
             description:
               "Heart-shaped pavlova. Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh strawberries. 9 inches, serves 8–10.",
-            image: "https://cakish.pages.dev/images/products/generated-heart-pavlova.jpg",
+            image: "https://cakish.pages.dev/images/products/heart-pavlova.jpg",
             offers: {
               "@type": "Offer",
               price: "78",
@@ -135,7 +135,7 @@ const bakerySchema = {
             name: "Mixed Berries Pavlova",
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, mixed fresh berries (strawberries, blueberries, raspberries, blackberries). Available in Small (6 inches, serves 5–7), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
-            image: "https://cakish.pages.dev/images/products/generated-mixed-berries-medium.jpg",
+            image: "https://cakish.pages.dev/images/products/mixed-berries-pavlova.jpg",
             offers: {
               "@type": "AggregateOffer",
               lowPrice: "52",
@@ -150,7 +150,7 @@ const bakerySchema = {
             name: "Raspberry Pavlova",
             description:
               "Crisp meringue base, Dulce de Leche or Nutella filling, hand-piped cream, fresh whole raspberries. Available in Small (6 inches, serves 5–7), Medium (9 inches, serves 8–12), and Large (12 inches, serves 13–18).",
-            image: "https://cakish.pages.dev/images/products/generated-raspberry-medium.jpg",
+            image: "https://cakish.pages.dev/images/products/raspberry-pavlova.jpg",
             offers: {
               "@type": "AggregateOffer",
               lowPrice: "50",
