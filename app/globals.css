@@ -97,3 +97,144 @@ a {
     font-size: 0.75rem;
   }
 }
+
+/* ── Private inspection pack ── */
+.inspection-pack {
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.inspection-section {
+  margin-bottom: 2.5rem;
+  border: 1px solid var(--line);
+  background: white;
+  padding: 1.5rem;
+}
+
+.inspection-section h1,
+.inspection-section h2 {
+  font-family: var(--font-serif);
+  line-height: 1.15;
+}
+
+.inspection-section h1 {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+}
+
+.inspection-section h2 {
+  margin-bottom: 1rem;
+  font-size: clamp(1.65rem, 4vw, 2.35rem);
+}
+
+.inspection-kicker {
+  margin-bottom: 0.5rem;
+  color: var(--soft-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.inspection-subheading {
+  margin-bottom: 0.75rem;
+  margin-top: 1.75rem;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+}
+
+.inspection-list {
+  margin-top: 1rem;
+  padding-left: 1.4rem;
+}
+
+.inspection-list li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.inspection-callout,
+.inspection-alert {
+  border-left: 4px solid var(--soft-gold);
+  background: var(--soft-cream);
+  padding: 1rem;
+}
+
+.inspection-alert {
+  border-left-color: #9f3a38;
+  background: #fff7f5;
+}
+
+.inspection-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.inspection-table th,
+.inspection-table td {
+  height: 2.5rem;
+  border: 1px solid #cfc8bf;
+  padding: 0.5rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.inspection-table th {
+  background: var(--soft-cream);
+  font-weight: 700;
+}
+
+@media print {
+  @page {
+    margin: 12mm;
+    size: A4 portrait;
+  }
+
+  body {
+    background: white;
+    color: #111;
+    font-size: 9pt;
+  }
+
+  .inspection-pack {
+    font-size: 9pt;
+  }
+
+  .inspection-section {
+    break-inside: avoid;
+    margin-bottom: 5mm;
+    border: 0;
+    padding: 0;
+  }
+
+  .inspection-section h1 {
+    font-size: 28pt;
+  }
+
+  .inspection-section h2 {
+    font-size: 18pt;
+  }
+
+  .inspection-table {
+    font-size: 7pt;
+  }
+
+  .inspection-table th,
+  .inspection-table td {
+    height: 8mm;
+    padding: 1.5mm;
+  }
+
+  .page-break-before {
+    break-before: page;
+  }
+
+  details > * {
+    display: block;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}

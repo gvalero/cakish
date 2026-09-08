@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /v1/
 Disallow: /test-payment/
+Disallow: /inspection-ready-7e4c/
 
 # LLM discoverability — see https://llmstxt.org
 # Full machine-readable site description for AI assistants:
