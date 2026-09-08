@@ -217,13 +217,22 @@ a {
   }
 
   .inspection-table {
+    min-width: 0 !important;
+    table-layout: fixed;
+    width: 100% !important;
     font-size: 7pt;
   }
 
   .inspection-table th,
   .inspection-table td {
     height: 8mm;
+    overflow-wrap: anywhere;
     padding: 1.5mm;
+    word-break: normal;
+  }
+
+  .inspection-pack .overflow-x-auto {
+    overflow: visible !important;
   }
 
   .page-break-before {

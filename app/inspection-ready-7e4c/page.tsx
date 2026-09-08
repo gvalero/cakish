@@ -162,9 +162,9 @@ export default function InspectionReadyPage() {
           </div>
         </section>
 
-        <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">1 · Immediate readiness</p>
-          <h2>Documents and evidence to place in this folder</h2>
+        <section className="inspection-section print:hidden">
+          <p className="inspection-kicker">Before printing</p>
+          <h2>Complete and attach these items tonight</h2>
           <CheckList
             items={[
               "HSE food business registration/notification confirmation.",
@@ -189,7 +189,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section">
-          <p className="inspection-kicker">2 · Premises controls</p>
+          <p className="inspection-kicker">1 · Premises controls</p>
           <h2>Home kitchen separation policy</h2>
           <p>
             Cakish production is separated from household activity by time and by dedicated storage.
@@ -215,7 +215,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">3 · HACCP-based plan</p>
+          <p className="inspection-kicker">2 · HACCP-based plan</p>
           <h2>Product flow and hazard controls</h2>
           <p className="mb-5 text-sm">
             Confirm the limits below against the completed HACCP course, ingredient manufacturers’
@@ -320,109 +320,87 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section">
-          <p className="inspection-kicker">4 · Allergen management</p>
+          <p className="inspection-kicker">3 · Allergen management</p>
           <h2>Written allergen declaration and cross-contact controls</h2>
           <div className="inspection-alert">
             Cakish pavlovas intentionally contain <strong>egg</strong> and <strong>milk</strong>.
             Nutella products intentionally contain <strong>hazelnuts, milk, and soybeans</strong>.
-            Confirm every remaining allergen from the exact brands and labels used. Do not rely on memory,
-            and do not make a gluten-free claim unless cross-contact is controlled and the claim is supportable.
+            All other allergen declarations are determined from the exact current ingredient and decoration
+            labels. Cakish does not rely on memory and does not make an allergen-free or gluten-free claim
+            where cross-contact cannot be reliably excluded.
           </div>
           <div className="mt-6 overflow-x-auto">
-            <table className="inspection-table min-w-[900px]">
+            <table className="inspection-table min-w-[760px]">
               <thead>
                 <tr>
                   <th>Product / option</th>
-                  <th>Egg</th>
-                  <th>Milk</th>
-                  <th>Nuts</th>
-                  <th>Soy</th>
-                  <th>Other declared allergen(s)</th>
-                  <th>Label checked / date</th>
+                  <th>Known declared allergens</th>
+                  <th>Additional declaration from current labels</th>
+                  <th>Reviewed / date</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Strawberry Pavlova + Dulce de Leche</td>
-                  <td>Yes</td>
-                  <td>Yes</td>
-                  <td>Check labels</td>
-                  <td>Check labels</td>
-                  <td>Complete from every ingredient label</td>
+                  <td>Eggs, milk</td>
+                  <td />
                   <td />
                 </tr>
                 <tr>
                   <td>Strawberry Pavlova + Nutella</td>
-                  <td>Yes</td>
-                  <td>Yes</td>
-                  <td>Hazelnut</td>
-                  <td>Yes</td>
-                  <td>Complete from every ingredient label</td>
+                  <td>Eggs, milk, hazelnuts, soybeans</td>
+                  <td />
                   <td />
                 </tr>
                 <tr>
                   <td>Heart Pavlova + chosen filling</td>
-                  <td>Yes</td>
-                  <td>Yes</td>
-                  <td>Depends on filling/labels</td>
-                  <td>Depends on filling/labels</td>
-                  <td>Complete from every ingredient label</td>
+                  <td>Eggs, milk; hazelnuts and soybeans when Nutella is used</td>
+                  <td />
                   <td />
                 </tr>
                 <tr>
                   <td>Mixed Berries Pavlova + chosen filling</td>
-                  <td>Yes</td>
-                  <td>Yes</td>
-                  <td>Depends on filling/labels</td>
-                  <td>Depends on filling/labels</td>
-                  <td>Complete from every ingredient label</td>
+                  <td>Eggs, milk; hazelnuts and soybeans when Nutella is used</td>
+                  <td />
                   <td />
                 </tr>
                 <tr>
                   <td>Raspberry Pavlova + chosen filling</td>
-                  <td>Yes</td>
-                  <td>Yes</td>
-                  <td>Depends on filling/labels</td>
-                  <td>Depends on filling/labels</td>
-                  <td>Complete from every ingredient label</td>
+                  <td>Eggs, milk; hazelnuts and soybeans when Nutella is used</td>
+                  <td />
                   <td />
                 </tr>
                 <tr>
                   <td>Topper / decoration / colour / sprinkles</td>
-                  <td>Check labels</td>
-                  <td>Check labels</td>
-                  <td>Check labels</td>
-                  <td>Check labels</td>
-                  <td>Complete before use</td>
+                  <td>As declared on the exact product label</td>
+                  <td />
                   <td />
                 </tr>
               </tbody>
             </table>
           </div>
-          <h3 className="inspection-subheading">Allergen procedure</h3>
-          <CheckList
-            items={[
-              "Keep the original packaging or a current label photograph/specification for every ingredient.",
-              "Review the allergen matrix whenever a recipe, decoration, ingredient brand, or supplier changes.",
-              "Record allergen information in writing for the exact product before the customer commits to buy.",
-              "Store ingredients closed and clearly identified; prevent spills and ingredient swaps.",
-              "Clean and sanitise food-contact surfaces and equipment before production.",
-              "Do not promise an allergen-free product where the shared home environment cannot guarantee it.",
-              "If allergen information is uncertain, stop the order or omit the ingredient until it is verified.",
-            ]}
-          />
-          <details className="mt-6 border border-[color:var(--line)] p-4 print:block">
-            <summary className="cursor-pointer font-semibold">The 14 regulated allergens checklist</summary>
+          <h3 className="inspection-subheading">Allergen control policy</h3>
+          <ul className="inspection-list">
+            <li>Original packaging or a current label photograph/specification is retained for every ingredient.</li>
+            <li>The allergen matrix is reviewed whenever a recipe, decoration, ingredient brand, or supplier changes.</li>
+            <li>Written allergen information for the exact product is available before the customer commits to buy.</li>
+            <li>Ingredients are stored closed and clearly identified to prevent spills and ingredient swaps.</li>
+            <li>Food-contact surfaces and equipment are cleaned and sanitised before production.</li>
+            <li>No allergen-free claim is made where the shared home environment cannot guarantee it.</li>
+            <li>If allergen information is uncertain, the order or ingredient is stopped until it is verified.</li>
+          </ul>
+          <div className="mt-6 border border-[color:var(--line)] p-4">
+            <h3 className="font-semibold">The 14 regulated allergens</h3>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
               {allergens.map((allergen) => (
-                <p key={allergen}>☐ {allergen}</p>
+                <p key={allergen}>{allergen}</p>
               ))}
             </div>
-          </details>
+          </div>
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">5 · Cleaning and personal hygiene</p>
+          <p className="inspection-kicker">4 · Cleaning and personal hygiene</p>
           <h2>Cleaning method and schedule</h2>
           <ol className="inspection-list list-decimal">
             <li>Remove or protect food and packaging.</li>
@@ -480,7 +458,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section">
-          <p className="inspection-kicker">6 · Traceability, withdrawal, and complaints</p>
+          <p className="inspection-kicker">5 · Traceability, withdrawal, and complaints</p>
           <h2>One step back and one step forward</h2>
           <p>
             Each production batch links ingredients and their supplier/lot details to the customer order.
@@ -503,7 +481,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">7 · Daily checks</p>
+          <p className="inspection-kicker">6 · Daily checks</p>
           <h2>Opening checklist</h2>
           <CheckList items={openingChecklist} />
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -521,7 +499,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">8 · Records</p>
+          <p className="inspection-kicker">7 · Records</p>
           <h2>Dedicated refrigerator temperature log</h2>
           <p className="mb-4 text-sm">
             Target: 0–5°C. Record the displayed temperature and periodically verify with a suitable thermometer.
@@ -533,7 +511,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">9 · Records</p>
+          <p className="inspection-kicker">8 · Records</p>
           <h2>Cleaning completion log</h2>
           <RecordTable
             headers={["Date / time", "Area or equipment", "Method / chemical", "Completed by", "Issue / corrective action"]}
@@ -542,7 +520,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">10 · Records</p>
+          <p className="inspection-kicker">9 · Records</p>
           <h2>Delivery and ingredient intake log</h2>
           <RecordTable
             headers={["Date", "Supplier / item", "Lot / use-by", "Condition / temp", "Accepted or rejected", "Initials"]}
@@ -551,7 +529,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">11 · Records</p>
+          <p className="inspection-kicker">10 · Records</p>
           <h2>Production batch and traceability sheet</h2>
           <div className="grid gap-4 text-sm sm:grid-cols-2">
             <p>Batch code: <BlankLine /></p>
@@ -580,7 +558,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">12 · Records</p>
+          <p className="inspection-kicker">11 · Records</p>
           <h2>Corrective action, complaint, or incident log</h2>
           <RecordTable
             headers={["Date / time", "Issue", "Affected food / batch", "Immediate action", "Follow-up / prevention", "Signed"]}
@@ -589,7 +567,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">13 · Records</p>
+          <p className="inspection-kicker">12 · Records</p>
           <h2>Thermometer accuracy check</h2>
           <p className="mb-4 text-sm">
             Follow the thermometer manufacturer’s instructions. Record the reference method, expected reading,
@@ -602,7 +580,7 @@ export default function InspectionReadyPage() {
         </section>
 
         <section className="inspection-section page-break-before">
-          <p className="inspection-kicker">14 · Review</p>
+          <p className="inspection-kicker">13 · Review</p>
           <h2>Food safety system review record</h2>
           <p>
             Review this system after an incident, complaint, failed check, recipe/supplier/equipment change,

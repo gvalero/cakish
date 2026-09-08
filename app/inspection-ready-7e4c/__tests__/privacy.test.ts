@@ -30,4 +30,27 @@ describe("inspection pack privacy controls", () => {
 
     expect(sitemap).not.toContain(privatePath);
   });
+
+  it("removes horizontal scrolling and fixed table widths when printing", () => {
+    const styles = readFileSync(resolve("app", "globals.css"), "utf8");
+
+    expect(styles).toContain(".inspection-pack .overflow-x-auto");
+    expect(styles).toContain("overflow: visible !important");
+    expect(styles).toContain("min-width: 0 !important");
+    expect(styles).toContain("table-layout: fixed");
+    expect(styles).toContain("overflow-wrap: anywhere");
+  });
+
+  it("prints an inspector-facing allergen policy without collapsed content", () => {
+    const page = readFileSync(
+      resolve("app", "inspection-ready-7e4c", "page.tsx"),
+      "utf8",
+    );
+
+    expect(page).toContain('className="inspection-section print:hidden"');
+    expect(page).toContain("Allergen control policy");
+    expect(page).toContain("The 14 regulated allergens");
+    expect(page).not.toContain("<details");
+    expect(page).not.toContain("Allergen procedure");
+  });
 });
